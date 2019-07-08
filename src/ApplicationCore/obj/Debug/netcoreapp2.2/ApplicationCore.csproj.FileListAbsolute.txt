@@ -1,0 +1,17 @@
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\bin\Debug\netcoreapp2.2\ApplicationCore.deps.json
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\bin\Debug\netcoreapp2.2\ApplicationCore.dll
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\bin\Debug\netcoreapp2.2\ApplicationCore.pdb
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.csprojAssemblyReference.cache
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.csproj.CoreCompileInputs.cache
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.AssemblyInfoInputs.cache
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.AssemblyInfo.cs
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.dll
+C:\Desenvolvimento\vendas-1fdd48fd2633c232d24611594b1b2dc8152c12ea\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.pdb
+C:\Desenvolvimento\D4\src\ApplicationCore\bin\Debug\netcoreapp2.2\ApplicationCore.deps.json
+C:\Desenvolvimento\D4\src\ApplicationCore\bin\Debug\netcoreapp2.2\ApplicationCore.dll
+C:\Desenvolvimento\D4\src\ApplicationCore\bin\Debug\netcoreapp2.2\ApplicationCore.pdb
+C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.csproj.CoreCompileInputs.cache
+C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.AssemblyInfoInputs.cache
+C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.AssemblyInfo.cs
+C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.dll
+C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.pdb

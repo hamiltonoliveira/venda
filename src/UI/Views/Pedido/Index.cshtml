@@ -1,0 +1,350 @@
+﻿@model UI.Controllers.PedidoController
+@{
+    ViewData["Title"] = "Pedido";
+}
+
+<style>
+    .center {
+        margin: auto;
+        width: 60%;
+        padding: 10px;
+    }
+</style>
+
+<style>
+    #customers {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 2px 4px;
+            text-align: left;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #000000;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding: 4px 6px;
+            text-align: left;
+            background-color: #000000;
+            color: white;
+        }
+</style>
+
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<link href="~/css/font-awesome.min.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
+        var request, db;
+        if (!window.indexedDB) {
+            console.log("Seu navegador não suporta o recurso HTML5 IndexedDB");
+        }
+        else {
+            request = window.indexedDB.open("D4", 2);
+            request.onerror = function (event) {
+                console.log("Erro ao abrir o banco de dados", event);
+            }
+
+            request.onupgradeneeded = function (event) {
+                console.log("Atualizando");
+                db = event.target.result;
+                var objectStore = db.createObjectStore("Pedidos", { keyPath: "id", autoIncrement: true });
+            };
+            request.onsuccess = function (event) {
+                console.log("Banco de dados aberto com sucesso");
+                db = event.target.result;
+            }
+        }
+        $("#addBtn").click(function () {
+
+            var numero = $("#numero").val();
+            var produtoId = $("#produtoId option:selected").val();
+            var DataEntrega = $("#DataEntrega").val();
+            var DataPedido = $("#datanow").val();
+            var ClienteId = 1;
+            var VendedorId = 1;
+            var quantidade = $("#quantidade").val();
+            var observacao = $("#observacao").val();
+
+
+            if (produtoId == "0" || DataEntrega == "" || quantidade == "") {
+                return false;
+            }
+
+            let qt = '000' + quantidade;
+            quantidade = qt.substring(qt.length - 3);
+
+            var transaction = db.transaction(["Pedidos"], "readwrite");
+            transaction.oncomplete = function (event) {
+                console.log("Sucesso :)");
+                $("#result").html("Adicionado com Sucesso");
+            };
+            transaction.onerror = function (event) {
+                console.log("Erro :(");
+                $("#result").html("Erro ao Adicionar");
+            };
+
+            var objectStore = transaction.objectStore("Pedidos");
+            objectStore.add({ numero: numero, produtoId: produtoId, DataPedido: DataPedido, ClienteId: ClienteId, VendedorId: VendedorId, DataEntrega: DataEntrega, quantidade: quantidade, observacao: observacao });
+            $("#content").clearQueue("");
+        });
+
+
+        $("#removeBtn").click(function () {
+            let _id = parseInt(document.getElementById('indice').value);
+            db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(_id);
+            $("#result").html("Removido");
+        });
+
+        $("#getBtn").click(function () {
+            let _id = parseInt(document.getElementById('indice').value);
+            var request = db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").get(_id);
+
+            request.onsuccess = function (event) {
+                $("#result").html("Nome : " + request.result.nome);
+            };
+        });
+
+        $("#sincronizaBtn").click(function () {
+
+            online = window.navigator.onLine;
+            if (online == false) {
+                $('#content').html("");
+                let body = '';
+                body = 'Seu device não esta conectado na web.';
+                $("#content").append(body);
+
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+                return false;
+            };
+
+            var transaction = db.transaction("Pedidos", "readwrite");
+            var objectStore = transaction.objectStore("Pedidos");
+            var req = objectStore.openCursor();
+            var contar = 0;
+
+            req.onsuccess = function (evt) {
+                var cursor = evt.target.result;
+
+                if (cursor) {
+                    contar += 1;
+                    PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
+                    db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(cursor.value.id);
+                    cursor.continue();
+                }
+
+                $('#content').html("");
+                let body = '';
+                body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + '</span>';
+                $("#content").append(body);
+
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+
+            };
+        });
+
+
+        $("#ListarBtn").click(function () {
+            $('#content').html("");
+            var transaction = db.transaction("Pedidos", "readwrite");
+            var objectStore = transaction.objectStore("Pedidos");
+            var req = objectStore.openCursor();
+            req.onsuccess = function (evt) {
+                var cursor = evt.target.result;
+                let body = '';
+                if (document.getElementById('content').innerHTML.trim().length == 0) {
+                    body = body + '<table style=with:400px  id=customers class=table table-responsive-sm>';
+                    body = body + '<tr>';
+                    body = body + '<td colspan=3>Pedidos não sincronizados</td>';
+                    body = body + '</tr>';
+                    body = body + '</table>';
+
+                    body = body + '<table style=with:400px  id=customers class=table table-responsive-sm>';
+                    body = body + '<thead class=thead-dark>';
+                    body = body + '<tr>';
+                    body = body + '<th>Pedido  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>';
+                    body = body + '<th>Entregar &nbsp&nbsp</th>';
+                    body = body + '<th>Qt.</th>';
+                    body = body + '</tr>';
+                    body = body + '</thead>';
+                    body = body + '</table>';
+                }
+
+                if (cursor) {
+                    //PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
+
+                    body = body + '<table style=with:400px id=customers class=table table-responsive-sm>';
+                    body = body + '<tr>';
+                    body = body + '<td>' + cursor.value.numero + '</td>';
+                    body = body + '<td>' + cursor.value.DataPedido + '</td>';
+                    body = body + '<td>' + cursor.value.quantidade + '</td>';
+
+                    cursor.continue();
+                    body = body + '</tr>';
+                    body = body + '</table>';
+                }
+                $("#content").append(body);
+            };
+        });
+
+
+        function PedidoPostar(_numero, _produtoId, _DataEntrega, _DataPedido, _VendedorId, _ClienteId, _quantidade, _observacao) {
+            var json = { "numero": _numero, "produtoId": _produtoId, "DataEntrega": _DataEntrega, "VendedorId": _VendedorId, "ClienteId": _ClienteId, "DataPedido": _DataPedido, "quantidade": _quantidade, "observacao": _observacao };
+            $.ajax({
+                type: "POST",
+                url: "Pedido/post",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                cache: false,
+
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                },
+                success: function (data) {
+                    //if (data.message === true) {
+                    //    console.log("Operação executada.");
+                    //} else {
+                    //    console.log("Operação falhou.");
+                    //}
+                },
+                //error: function (xhr, ajaxOptions, thrownError){
+                //alert(xhr.status);
+                //alert(xhr.responseText);
+                // alert(thrownError);
+                //}
+            });
+        }
+
+    });
+</script>
+
+
+<form>
+    <div stype="padding: 5px;">
+        <div class="table-responsive">
+            <div class="center">
+                <p><b>Entrada do Pedido</b></p>
+            </div>
+
+
+            <table class="table table-borderless">
+                <tr>
+                    <td>
+                        <label for="nome">Pedido</label>
+                    </td>
+                    <td>
+                        <input type="text" disabled class="form-control" id="numero" name="numero" value="@ViewBag.numero">
+                        <input type="hidden" class="form-control" id="datanow" format="dd/MM/yyyy" name="datanow" value="@ViewBag.dataNow">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Produto</label>
+                    </td>
+                    <td>
+                        <select id="produtoId" class="form-control">
+                            <option value=0></option>
+                            <option value=1>Auto-Carros</option>
+                            <option value=2>Lojas Ferragens</option>
+                            <option value=3>Studio D4</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Entrega</label>
+                    </td>
+                    <td>
+                        <input type="date" class="form-control" id="DataEntrega" name="DataEntrega" format="dd/MM/yyyy" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Quantidade</label>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="quantidade" name="quantidade" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Observação</label>
+                    </td>
+                    <td>
+                        <textarea class="form-control" id="observacao" rows="2"></textarea>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <input type="button" class="btn btn-outline-primary" name="addBtn" value="Adicionar" id="addBtn" style="width: 90px; height:40px" />
+            </div>
+            <div class="col-4">
+                <input type="button" class="btn btn-outline-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 90px; height:40px" data-toggle="modal" data-target="#myModal" />
+            </div>
+            <div class="col-4">
+                <i class='fas fa-cloud-upload-alt' style='font-size:20px;color:blue; position:absolute; left:22px; top:10px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
+                <input type="button" class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 40px; height:40px" />
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+            </script>
+
+            <br />
+
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Seus Pedidos</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="content"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+</form>
