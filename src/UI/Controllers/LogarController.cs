@@ -39,6 +39,7 @@ namespace UI.Controllers
         {
 
             //dapper
+            var _id = "";
             var _perfilid = "";
             var _senha = "";
             var _codigoUsuario = "";
@@ -56,7 +57,7 @@ namespace UI.Controllers
                 _codigoUsuario = request.CodigoUsuario;
                 _senha = GerarSenha.Encrypt(request.Senha);
 
-                _sql += @"Select CodigoUsuario,Senha,Perfilid, Nome from Usuario where Senha=@senha and CodigoUsuario=@CodigoUsuario and Ativo=1";
+                _sql += @"Select id, CodigoUsuario,Senha,Perfilid, Nome from Usuario where Senha=@senha and CodigoUsuario=@CodigoUsuario and Ativo=1";
 
                 var retorno = db.Query<UsuarioViewModel>(_sql, new { senha = _senha, CodigoUsuario = _codigoUsuario }, commandType: CommandType.Text).ToList();
 
@@ -65,6 +66,7 @@ namespace UI.Controllers
                     _perfilid = retorno[0].Perfilid.ToString();
                     _libera = true;
                     _nome = retorno[0].Nome.ToString();
+                    _id = retorno[0].id.ToString();
                 }
             }
 
@@ -78,7 +80,8 @@ namespace UI.Controllers
                 {
                      new Claim(ClaimTypes.Role,_perfilid.ToString()),
                      new Claim(ClaimTypes.Name,_nome.ToString() ),
-                     new Claim("codigoUsuario",_codigoUsuario.ToString())
+                     new Claim("codigoUsuario",_codigoUsuario.ToString()),
+                     new Claim("id", _id.ToString())
                 };
 
                 //recebe uma instancia da classe SymmetricSecurityKey 
@@ -112,7 +115,16 @@ namespace UI.Controllers
                     Expires = DateTime.Now.AddMinutes(30)
                 });
 
-            return Ok(new
+                Response.Cookies.Delete("D4User");
+                Response.Cookies.Append("D4User", _id, new Microsoft.AspNetCore.Http.CookieOptions
+                {
+                    HttpOnly = false,
+                    Secure = false,
+                    Expires = DateTime.Now.AddMinutes(30)
+                });
+
+
+               return Ok(new
                 {
                    token = new JwtSecurityTokenHandler().WriteToken(token)
              });

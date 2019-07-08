@@ -75,10 +75,21 @@
             var DataEntrega = $("#DataEntrega").val();
             var DataPedido = $("#datanow").val();
             var ClienteId = 1;
-            var VendedorId = 1;
+            var VendedorId = getCookie("D4User");
             var quantidade = $("#quantidade").val();
             var observacao = $("#observacao").val();
 
+            if (VendedorId == null) {
+                $('#content').html("");
+                let body = '';
+                body = 'Favor efetuar o seu Login.';
+                $("#content").append(body);
+
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+                return false;
+            }
 
             if (produtoId == "0" || DataEntrega == "" || quantidade == "") {
                 return false;
@@ -119,6 +130,19 @@
         });
 
         $("#sincronizaBtn").click(function () {
+
+            var VendedorId = getCookie("D4User");
+            if (VendedorId == null) {
+                $('#content').html("");
+                let body = '';
+                body = 'Favor efetuar o seu Login.';
+                $("#content").append(body);
+
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+                return false;
+            }
 
             online = window.navigator.onLine;
             if (online == false) {
@@ -166,6 +190,20 @@
             var transaction = db.transaction("Pedidos", "readwrite");
             var objectStore = transaction.objectStore("Pedidos");
             var req = objectStore.openCursor();
+
+            var VendedorId = getCookie("D4User");
+            if (VendedorId == null) {
+                $('#content').html("");
+                let body = '';
+                body = 'Favor efetuar o seu Login.';
+                $("#content").append(body);
+
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+                return false;
+            }
+
             req.onsuccess = function (evt) {
                 var cursor = evt.target.result;
                 let body = '';
@@ -207,6 +245,7 @@
 
         function PedidoPostar(_numero, _produtoId, _DataEntrega, _DataPedido, _VendedorId, _ClienteId, _quantidade, _observacao) {
             var json = { "numero": _numero, "produtoId": _produtoId, "DataEntrega": _DataEntrega, "VendedorId": _VendedorId, "ClienteId": _ClienteId, "DataPedido": _DataPedido, "quantidade": _quantidade, "observacao": _observacao };
+
             $.ajax({
                 type: "POST",
                 url: "Pedido/post",
@@ -235,6 +274,22 @@
         }
 
     });
+</script>
+
+<script>
+    function getCookie(c_name) {
+        if (document.cookie.length > 0) {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) {
+                    c_end = document.cookie.length;
+                }
+                return unescape(document.cookie.substring(c_start, c_end));
+            }
+        }
+    }
 </script>
 
 
@@ -305,10 +360,10 @@
     <div class="container">
         <div class="row">
             <div class="col-4">
-                <input type="button" class="btn btn-outline-primary" name="addBtn" value="Adicionar" id="addBtn" style="width: 90px; height:40px" />
+                <input type="button" class="btn btn-primary" name="addBtn" value="Adicionar" id="addBtn" style="width: 90px; height:40px" />
             </div>
             <div class="col-4">
-                <input type="button" class="btn btn-outline-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 90px; height:40px" data-toggle="modal" data-target="#myModal" />
+                <input type="button" class="btn btn-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 90px; height:40px" data-toggle="modal" data-target="#myModal" />
             </div>
             <div class="col-4">
                 <i class='fas fa-cloud-upload-alt' style='font-size:20px;color:blue; position:absolute; left:22px; top:10px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
