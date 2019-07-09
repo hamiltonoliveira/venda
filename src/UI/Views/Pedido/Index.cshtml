@@ -176,13 +176,17 @@
             var req = objectStore.openCursor();
             var contar = 0;
 
-            req.onsuccess = function (evt) {
+                req.onsuccess = function (evt) {
                 var cursor = evt.target.result;
 
                 if (cursor) {
                     contar += 1;
-                    PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
-                    db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(cursor.value.id);
+                 PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
+
+                    if (typeof evt.target.result != 'undefined') {
+                        db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(cursor.value.id);
+                    }
+                  
                     cursor.continue();
                 }
 
@@ -271,7 +275,7 @@
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     //if (data.message === true) {
                     //    console.log("Operação executada.");
                     //} else {
