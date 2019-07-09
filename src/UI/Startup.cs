@@ -23,7 +23,7 @@ namespace UI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration )
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -32,10 +32,11 @@ namespace UI
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-          {
+        {
 
             //Swagger
-            services.AddSwaggerGen(c => {
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc("v1", new Info { Title = "API", Version = "V1" });
             });
             //Swagger
@@ -54,12 +55,13 @@ namespace UI
             });
 
 
-             services.AddDbContext<ConextoDB>(options =>
-             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ConextoDB>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             //Token
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-           .AddJwtBearer(options => {
+           .AddJwtBearer(options =>
+           {
                options.TokenValidationParameters = new TokenValidationParameters
                {
                    ValidateIssuer = true,
@@ -107,17 +109,34 @@ namespace UI
 
             //acrescentado o FluentiValidation
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddFluentValidation(
-                 fvc =>fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+                 fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
             //acrescentado o FluentiValidation
 
+            //pwa
+            //services.AddProgressiveWebApp(new PwaOptions
+            //{
+            //    CacheId = "Worker " + version,
+            //    Strategy = ServiceWorkerStrategy.CacheFirst,
+            //    RoutesToPreCache = "/Home/Contact, /Home/About"
+
+            //    OfflineRoute = "fallBack.html",
+            //});
+
+            services.AddProgressiveWebApp();
+            //pwa
+
+
             //EnabledCORS
-            services.AddCors(options => {
+            services.AddCors(options =>
+            {
                 options.AddPolicy("EnabledCORS", builder =>
                 {
                     builder.AllowAnyOrigin().AllowAnyMethod().AllowCredentials().Build();
                 });
             });
             //EnabledCORS
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,7 +154,7 @@ namespace UI
             }
 
             //cors
-              app.UseCors("EnabledCORS"); 
+            app.UseCors("EnabledCORS");
             //cors
 
             //validar a autenticacao
@@ -149,7 +168,8 @@ namespace UI
 
             //Swagger
             app.UseSwagger();
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "post API V1");
             });
             //Swagger
@@ -165,7 +185,7 @@ namespace UI
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            
+
         }
     }
 }

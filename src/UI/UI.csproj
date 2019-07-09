@@ -4,47 +4,14 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="wwwroot\lib\NovaPasta\**" />
-    <Compile Remove="wwwroot\NovaPasta\**" />
-    <Content Remove="wwwroot\lib\NovaPasta\**" />
-    <Content Remove="wwwroot\NovaPasta\**" />
-    <EmbeddedResource Remove="wwwroot\lib\NovaPasta\**" />
-    <EmbeddedResource Remove="wwwroot\NovaPasta\**" />
-    <None Remove="wwwroot\lib\NovaPasta\**" />
-    <None Remove="wwwroot\NovaPasta\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\css\jquery.datetimepicker.css" />
-    <Content Remove="wwwroot\js\jquery.datetimepicker.full.js" />
-  </ItemGroup>
-
-  <!-- 
-  <ItemGroup>
-    <Compile Remove="Views\_Logar\**" />
-    <Content Remove="Views\_Logar\**" />
-    <EmbeddedResource Remove="Views\_Logar\**" />
-    <None Remove="Views\_Logar\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Controllers\LoginController.cs" />
-    <Compile Remove="Views\Shared\Index.cshtml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Views\Home\Token.cshtml" />
-    <Content Remove="Views\Shared\Index.cshtml" />
-  </ItemGroup>
--->
+ 
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.49" />
   </ItemGroup>
 
 
