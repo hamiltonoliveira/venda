@@ -92,7 +92,7 @@
             }
 
             if (produtoId == "0" || DataEntrega == "" || quantidade == "") {
-                return false;
+               return false;
             }
 
             let qt = '000' + quantidade;
@@ -260,7 +260,7 @@
 
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("Pedido", "post")',
+                url: 'Pedido/post',
                 data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -271,6 +271,7 @@
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
                 success: function (data) {
+                    console.log(data);
                     //if (data.message === true) {
                     //    console.log("Operação executada.");
                     //} else {

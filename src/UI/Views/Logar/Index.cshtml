@@ -70,6 +70,9 @@
             success: function (data) {
                 //jwtRequest('https://' + x + '/api/usuario/getall');
                 //console.log(data);
+
+               //setTimeout("document.location = 'https://' + x + '/api/pedido/'", 5000);
+
                 $('#content').html("");
                 let body = '';
                 body = 'Favor efetuar o seu Login.';
@@ -78,6 +81,7 @@
                 $("#myModal").modal({ keyboard: false });
                 $("#myModal").modal('show');
                 return false;
+
             },
             error: function (xhr, ajaxOptions, thrownError) {
            

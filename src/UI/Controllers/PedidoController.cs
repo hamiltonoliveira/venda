@@ -37,7 +37,6 @@ namespace UI.Controllers
             {
                 return BadRequest(ModelState);
             }
-           
             await _Repositorio.InsertAsync(pedido);
             return Ok(pedido);
         }
