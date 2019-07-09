@@ -113,16 +113,7 @@ namespace UI
             //acrescentado o FluentiValidation
 
             //pwa
-            //services.AddProgressiveWebApp(new PwaOptions
-            //{
-            //    CacheId = "Worker " + version,
-            //    Strategy = ServiceWorkerStrategy.CacheFirst,
-            //    RoutesToPreCache = "/Home/Contact, /Home/About"
-
-            //    OfflineRoute = "fallBack.html",
-            //});
-
-            services.AddProgressiveWebApp();
+                  services.AddProgressiveWebApp();
             //pwa
 
 

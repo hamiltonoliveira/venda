@@ -24,7 +24,7 @@ namespace UI.Controllers
 
         public IActionResult Index()
         {
-             return View();
+           return View();
         }
 
 
@@ -124,10 +124,11 @@ namespace UI.Controllers
                 });
 
 
-               return Ok(new
+                return Ok(new
                 {
-                   token = new JwtSecurityTokenHandler().WriteToken(token)
-             });
+                    token = new JwtSecurityTokenHandler().WriteToken(token)
+                });
+
             }
             return BadRequest("Credenciais inválidas...");
         }

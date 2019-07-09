@@ -110,7 +110,21 @@
 
             var objectStore = transaction.objectStore("Pedidos");
             objectStore.add({ numero: numero, produtoId: produtoId, DataPedido: DataPedido, ClienteId: ClienteId, VendedorId: VendedorId, DataEntrega: DataEntrega, quantidade: quantidade, observacao: observacao });
-            $("#content").clearQueue("");
+
+            location.reload();
+
+            $("#DataEntrega").val(null);
+            $("#quantidade").val(null);
+            $("#observacao").val(null);
+         
+            $('#content').html("");
+            let body = '';
+            body = 'Adicionado dados digitados.';
+            $("#content").append(body);
+            $("#myModal").modal();
+            $("#myModal").modal({ keyboard: false });
+            $("#myModal").modal('show');
+            return false;
         });
 
 
@@ -226,8 +240,6 @@
                 }
 
                 if (cursor) {
-                    //PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
-
                     body = body + '<table style=with:400px id=customers class=table table-responsive-sm>';
                     body = body + '<tr>';
                     body = body + '<td>' + cursor.value.numero + '</td>';
@@ -318,7 +330,7 @@
                     </td>
                     <td>
                         <select id="produtoId" class="form-control">
-                            <option value=0></option>
+                            <option value=0 selected="selected"></option>
                             <option value=1>Auto-Carros</option>
                             <option value=2>Lojas Ferragens</option>
                             <option value=3>Studio D4</option>
