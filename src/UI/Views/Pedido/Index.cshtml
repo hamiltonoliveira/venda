@@ -260,7 +260,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "Pedido/post",
+                url: '@Url.Action("Pedido", "post")',
                 data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -410,6 +410,7 @@
 
                 </div>
             </div>
+            <!-- Modal -->
         </div>
     </div>
 

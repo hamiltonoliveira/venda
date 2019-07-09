@@ -22,6 +22,27 @@
     </form>
 </div>
 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="content"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
     function Logar() {
         var CodigoUsuario = $('#CodigoUsuario').val();
@@ -36,7 +57,7 @@
 
         $.ajax({
             type: "POST",
-            url: "logar",
+            url: '@Url.Action("logar", "Index")',
             data: JSON.stringify(json),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -47,12 +68,27 @@
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (data) {
-                jwtRequest('https://' + x + '/api/usuario/getall');
-                //location.reload();
-                console.log(data);
+                //jwtRequest('https://' + x + '/api/usuario/getall');
+                //console.log(data);
+                $('#content').html("");
+                let body = '';
+                body = 'Favor efetuar o seu Login.';
+                $("#content").append('Acesso autorizado.');
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+                return false;
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log("Credenciais Inválidas...")
+           
+                $('#content').html("");
+                let body = '';
+                body = 'Favor efetuar o seu Login.';
+                $("#content").append('Credenciais Inválidas.');
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+                return false;
             }
         });
     }
