@@ -98,7 +98,7 @@ namespace UI.Controllers
                      issuer: "hamilton.net",
                      audience: "hamilton.net",
                      claims: claims,
-                     expires: DateTime.Now.AddMinutes(30),
+                     expires: DateTime.Now.AddHours(8),
                      signingCredentials: creds);
 
 
@@ -112,7 +112,7 @@ namespace UI.Controllers
                 {
                     HttpOnly = false,
                     Secure = false,
-                    Expires = DateTime.Now.AddMinutes(30)
+                    Expires = DateTime.Now.AddHours(8)
                 });
 
                 Response.Cookies.Delete("D4User");
@@ -120,7 +120,7 @@ namespace UI.Controllers
                 {
                     HttpOnly = false,
                     Secure = false,
-                    Expires = DateTime.Now.AddMinutes(30)
+                    Expires = DateTime.Now.AddHours(8)
                 });
 
 

@@ -53,7 +53,7 @@
             console.log("Seu navegador não suporta o recurso HTML5 IndexedDB");
         }
         else {
-            request = window.indexedDB.open("D4", 2);
+            request = window.indexedDB.open("D4", 1);
             request.onerror = function (event) {
                 console.log("Erro ao abrir o banco de dados", event);
             }
@@ -92,7 +92,7 @@
             }
 
             if (produtoId == "0" || DataEntrega == "" || quantidade == "") {
-               return false;
+                return false;
             }
 
             let qt = '000' + quantidade;
@@ -116,7 +116,7 @@
             $("#DataEntrega").val(null);
             $("#quantidade").val(null);
             $("#observacao").val(null);
-         
+
             $('#content').html("");
             let body = '';
             body = 'Adicionado dados digitados.';
@@ -128,11 +128,16 @@
         });
 
 
-        $("#removeBtn").click(function () {
-            let _id = parseInt(document.getElementById('indice').value);
-            db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(_id);
-            $("#result").html("Removido");
-        });
+        //$("#removeBtn").click(function () {
+        //    //let _id = parseInt(document.getElementById('repassa').value);
+
+        //    console.log("AQUI ESTOU");
+
+        //    //db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(_id);
+        //    //$("#result").html("Removido");
+        //});
+
+
 
         $("#getBtn").click(function () {
             let _id = parseInt(document.getElementById('indice').value);
@@ -142,6 +147,8 @@
                 $("#result").html("Nome : " + request.result.nome);
             };
         });
+
+
 
         $("#sincronizaBtn").click(function () {
 
@@ -176,17 +183,15 @@
             var req = objectStore.openCursor();
             var contar = 0;
 
-                req.onsuccess = function (evt) {
+            req.onsuccess = function (evt) {
                 var cursor = evt.target.result;
 
                 if (cursor) {
                     contar += 1;
-                 PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
-
+                    PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
                     if (typeof evt.target.result != 'undefined') {
                         db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(cursor.value.id);
                     }
-                  
                     cursor.continue();
                 }
 
@@ -228,13 +233,14 @@
                 if (document.getElementById('content').innerHTML.trim().length == 0) {
                     body = body + '<table style=with:400px  id=customers class=table table-responsive-sm>';
                     body = body + '<tr>';
-                    body = body + '<td colspan=3>Pedidos não sincronizados</td>';
+                    body = body + '<td colspan=3 class=jumbotron>Pedidos não sincronizados</td>';
                     body = body + '</tr>';
                     body = body + '</table>';
 
                     body = body + '<table style=with:400px  id=customers class=table table-responsive-sm>';
                     body = body + '<thead class=thead-dark>';
                     body = body + '<tr>';
+                    body = body + '<th>&nbsp&nbsp&nbsp</th>';
                     body = body + '<th>Pedido  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>';
                     body = body + '<th>Entregar &nbsp&nbsp</th>';
                     body = body + '<th>Qt.</th>';
@@ -246,14 +252,20 @@
                 if (cursor) {
                     body = body + '<table style=with:400px id=customers class=table table-responsive-sm>';
                     body = body + '<tr>';
+
+
+                    body = body + '<td><input type=button name=1a id=1a onclick=repassa(' + cursor.value.id + ');></td>';
+
+
                     body = body + '<td>' + cursor.value.numero + '</td>';
                     body = body + '<td>' + cursor.value.DataPedido + '</td>';
                     body = body + '<td>' + cursor.value.quantidade + '</td>';
+                    body = body + '</tr>';
 
                     cursor.continue();
-                    body = body + '</tr>';
-                    body = body + '</table>';
                 }
+                body = body + '</table>';
+
                 $("#content").append(body);
             };
         });
@@ -275,7 +287,6 @@
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
                 success: function (data) {
-                    //console.log(data);
                     //if (data.message === true) {
                     //    console.log("Operação executada.");
                     //} else {
@@ -289,6 +300,7 @@
                 //}
             });
         }
+
 
     });
 </script>
@@ -309,6 +321,30 @@
     }
 </script>
 
+<script type="text/javascript">
+    function repassa(id) {
+        let _id = id;
+        var db;
+        db = indexedDB.open('D4', 1);
+        db.onsuccess = function (event) {
+            _db = db.result;
+            var transaction = _db.transaction(["Pedidos"], "readwrite");
+            _db = transaction.objectStore("Pedidos").delete(_id);
+    
+            $('#content').html("");
+            let body = '';
+            body = 'Deletado o pedido.';
+            $("#content").append(body);
+
+            $("#myModal").modal();
+            $("#myModal").modal({ keyboard: false });
+            $("#myModal").modal('show');
+            return false;
+            location.reload();
+        }
+        return false;
+    }
+</script>
 
 <form>
     <div stype="padding: 5px;">
@@ -374,6 +410,7 @@
         </div>
     </div>
 
+
     <div class="container">
         <div class="row">
             <div class="col-4">
@@ -383,7 +420,7 @@
                 <input type="button" class="btn btn-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 90px; height:40px" data-toggle="modal" data-target="#myModal" />
             </div>
             <div class="col-4">
-                <i class='fas fa-cloud-upload-alt' style='font-size:20px;color:blue; position:absolute; left:22px; top:10px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
+                <i class='fas fa-cloud-upload-alt' style='font-size:15px;color:blue; position:absolute; left:25px; top:12px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
                 <input type="button" class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 40px; height:40px" />
             </div>
             <script>
@@ -401,12 +438,16 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Seus Pedidos</h5>
+
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
+
                             <div id="content"></div>
+
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
