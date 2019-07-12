@@ -240,7 +240,7 @@
                     body = body + '<table style=with:400px  id=customers class=table table-responsive-sm>';
                     body = body + '<thead class=thead-dark>';
                     body = body + '<tr>';
-                    body = body + '<th>&nbsp&nbsp&nbsp</th>';
+                    body = body + '<th>&nbsp&nbsp&nbsp&nbsp</th>';
                     body = body + '<th>Pedido  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>';
                     body = body + '<th>Entregar &nbsp&nbsp</th>';
                     body = body + '<th>Qt.</th>';
@@ -252,11 +252,8 @@
                 if (cursor) {
                     body = body + '<table style=with:400px id=customers class=table table-responsive-sm>';
                     body = body + '<tr>';
-
-
-                    body = body + '<td><input type=button name=1a id=1a onclick=repassa(' + cursor.value.id + ');></td>';
-
-
+                    body = body + '<i class="fa fa-window-close" style="font-size:15px;color:red;position:relative; left:10px; top:30px"></i>';
+                    body = body + '<td><input class=btn style=width:8px; type=button name=1a id=1a onclick=repassa(' + cursor.value.id + ');></td>';
                     body = body + '<td>' + cursor.value.numero + '</td>';
                     body = body + '<td>' + cursor.value.DataPedido + '</td>';
                     body = body + '<td>' + cursor.value.quantidade + '</td>';
