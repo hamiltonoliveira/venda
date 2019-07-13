@@ -47,7 +47,7 @@ namespace UI.Controllers
         [HttpGet("GetId/{id}")]
         public ActionResult<IEnumerable<Cliente>> GetId(int id)
         {
-           var Clientes = _Repositorio.Where(p => p.id == 1);
+           var Clientes = _Repositorio.Where(p => p.id == id);
 
             return  Ok(Clientes);
         }
