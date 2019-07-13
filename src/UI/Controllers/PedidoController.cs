@@ -12,7 +12,7 @@ namespace UI.Controllers
     public class PedidoController : Controller
     {
         private IServices<Pedido> _Repositorio;
-       
+
         public PedidoController(IServices<Pedido> Repositorio)
         {
             _Repositorio = Repositorio;
@@ -40,6 +40,11 @@ namespace UI.Controllers
             await _Repositorio.InsertAsync(pedido);
             return Ok(pedido);
         }
+
+
+
+
+
     }
 }
 

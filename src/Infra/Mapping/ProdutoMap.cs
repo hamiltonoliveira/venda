@@ -17,6 +17,7 @@ namespace Infra.Mapping
             builder.Property(x => x.PrecoVenda).HasColumnType("decimal(7,2)").IsRequired(true);
             builder.Property(x => x.DataCadastro).HasColumnName("DataCadastro").HasColumnType("datetime");
             builder.Property(x => x.DataSaida).HasColumnName("DataSaida").HasColumnType("datetime");
+            builder.Property(x => x.Imagem).HasMaxLength(20);
             builder.HasQueryFilter(x => x.Ativo == true);
         }
     }

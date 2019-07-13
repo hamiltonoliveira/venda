@@ -17,6 +17,12 @@ namespace Infra.Mapping
             builder.Property(x => x.Telefone).HasMaxLength(15);
             builder.Property(x => x.Celular).HasMaxLength(15);
             builder.Property(x => x.Email).HasMaxLength(30);
+            builder.Property(x => x.Endereco).HasMaxLength(60);
+            builder.Property(x => x.Complemento).HasMaxLength(20);
+            builder.Property(x => x.Bairro).HasMaxLength(30);
+            builder.Property(x => x.Cidade).HasMaxLength(30);
+            builder.Property(x => x.Estado).HasMaxLength(2);
+            builder.Property(x => x.Cep).HasMaxLength(8);
             builder.Property(x => x.DataCadastro).HasColumnName("DataCadastro").HasColumnType("datetime");
             builder.HasQueryFilter(x => x.Ativo == true);
         }

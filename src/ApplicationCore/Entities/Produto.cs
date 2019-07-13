@@ -14,6 +14,7 @@ namespace ApplicationCore.Entities
         public decimal PrecoCompra { get; set; }
         public int Categoria { get; set; }
         public int Fornecedor { get; set; }
+        public string Imagem { get; set; }
         public bool Ativo { get; set; }
 
         public Produto()

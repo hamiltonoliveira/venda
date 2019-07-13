@@ -54,7 +54,7 @@ namespace Infra.Repository
 
         public IEnumerable<Tentity> Where(Expression<Func<Tentity, bool>> expression)
         {
-            return this.DbSet.Where(expression);
+             return _dbcontext.Set<Tentity>().Where(expression);
         }
       }
     }

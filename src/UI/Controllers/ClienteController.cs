@@ -1,89 +1,64 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace UI.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
+
     public class ClienteController : Controller
     {
         // GET: Cliente
+        private IServices<Cliente> _Repositorio;
+
+        public ClienteController(IServices<Cliente> Repositorio)
+        {
+            _Repositorio = Repositorio;
+
+        }
+
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Cliente/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("getall")]
+        public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
-            return View();
+            //var claims = User.Claims.ToList();
+            //var user = claims.Any(x => x.Type == "Admin");
+            //if (user)
+            //{
+            //    return await _Repositorio.GetAllAsync();
+            //}
+            //else
+            //{
+            //    return await _Repositorio.GetAllAsync();
+            //}
+
+            return await _Repositorio.GetAllAsync();
+       }
+
+  
+        [HttpGet("GetId/{id}")]
+        public ActionResult<IEnumerable<Cliente>> GetId(int id)
+        {
+           var Clientes = _Repositorio.Where(p => p.id == 1);
+
+            return  Ok(Clientes);
         }
 
-        // GET: Cliente/Create
-        public ActionResult Create()
+        [HttpGet("Get/{nome}")]
+        public ActionResult<IEnumerable<Cliente>> Tudo(string nome)
         {
-            return View();
+            var Clientes = _Repositorio.Where(p=>p.Nome.Contains(nome)).ToList();
+            return Ok(Clientes);
         }
 
-        // POST: Cliente/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Cliente/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Cliente/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Cliente/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Cliente/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

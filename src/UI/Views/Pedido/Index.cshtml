@@ -69,7 +69,6 @@
             }
         }
         $("#addBtn").click(function () {
-
             var numero = $("#numero").val();
             var produtoId = $("#produtoId option:selected").val();
             var DataEntrega = $("#DataEntrega").val();
@@ -84,7 +83,6 @@
                 let body = '';
                 body = 'Favor efetuar o seu Login.';
                 $("#content").append(body);
-
                 $("#myModal").modal();
                 $("#myModal").modal({ keyboard: false });
                 $("#myModal").modal('show');
@@ -111,11 +109,11 @@
             var objectStore = transaction.objectStore("Pedidos");
             objectStore.add({ numero: numero, produtoId: produtoId, DataPedido: DataPedido, ClienteId: ClienteId, VendedorId: VendedorId, DataEntrega: DataEntrega, quantidade: quantidade, observacao: observacao });
 
-            location.reload();
-
             $("#DataEntrega").val(null);
             $("#quantidade").val(null);
             $("#observacao").val(null);
+
+            location.reload(true);
 
             $('#content').html("");
             let body = '';
@@ -127,18 +125,6 @@
             return false;
         });
 
-
-        //$("#removeBtn").click(function () {
-        //    //let _id = parseInt(document.getElementById('repassa').value);
-
-        //    console.log("AQUI ESTOU");
-
-        //    //db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(_id);
-        //    //$("#result").html("Removido");
-        //});
-
-
-
         $("#getBtn").click(function () {
             let _id = parseInt(document.getElementById('indice').value);
             var request = db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").get(_id);
@@ -148,10 +134,7 @@
             };
         });
 
-
-
         $("#sincronizaBtn").click(function () {
-
             var VendedorId = getCookie("D4User");
             if (VendedorId == null) {
                 $('#content').html("");
@@ -169,7 +152,7 @@
             if (online == false) {
                 $('#content').html("");
                 let body = '';
-                body = 'Seu device não esta conectado na web.';
+                body = 'Seu dispositivo não esta conectado na web.';
                 $("#content").append(body);
 
                 $("#myModal").modal();
@@ -185,16 +168,15 @@
 
             req.onsuccess = function (evt) {
                 var cursor = evt.target.result;
-
                 if (cursor) {
                     contar += 1;
                     PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
+
                     if (typeof evt.target.result != 'undefined') {
                         db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(cursor.value.id);
                     }
                     cursor.continue();
                 }
-
                 $('#content').html("");
                 let body = '';
                 body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + '</span>';
@@ -203,7 +185,6 @@
                 $("#myModal").modal();
                 $("#myModal").modal({ keyboard: false });
                 $("#myModal").modal('show');
-
             };
         });
 
@@ -252,8 +233,8 @@
                 if (cursor) {
                     body = body + '<table style=with:400px id=customers class=table table-responsive-sm>';
                     body = body + '<tr>';
-                    body = body + '<i class="fa fa-window-close" style="font-size:15px;color:red;position:relative; left:10px; top:30px"></i>';
-                    body = body + '<td><input class=btn style=width:8px; type=button name=1a id=1a onclick=repassa(' + cursor.value.id + ');></td>';
+                    body = body + '<i class="fa fa-window-close" style="font-size:15px;color:red;position:relative; left:9px; top:30px"></i>';
+                    body = body + '<td><input class="btn" style=width:8px; height:auto; type=button name=1a id=1a onclick=repassa(' + cursor.value.id + ');></td>';
                     body = body + '<td>' + cursor.value.numero + '</td>';
                     body = body + '<td>' + cursor.value.DataPedido + '</td>';
                     body = body + '<td>' + cursor.value.quantidade + '</td>';
@@ -270,7 +251,6 @@
 
         function PedidoPostar(_numero, _produtoId, _DataEntrega, _DataPedido, _VendedorId, _ClienteId, _quantidade, _observacao) {
             var json = { "numero": _numero, "produtoId": _produtoId, "DataEntrega": _DataEntrega, "VendedorId": _VendedorId, "ClienteId": _ClienteId, "DataPedido": _DataPedido, "quantidade": _quantidade, "observacao": _observacao };
-
             $.ajax({
                 type: "POST",
                 url: 'Pedido/post',
@@ -284,21 +264,9 @@
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
                 success: function (data) {
-                    //if (data.message === true) {
-                    //    console.log("Operação executada.");
-                    //} else {
-                    //    console.log("Operação falhou.");
-                    //}
                 },
-                //error: function (xhr, ajaxOptions, thrownError){
-                //alert(xhr.status);
-                //alert(xhr.responseText);
-                // alert(thrownError);
-                //}
             });
         }
-
-
     });
 </script>
 
@@ -327,12 +295,11 @@
             _db = db.result;
             var transaction = _db.transaction(["Pedidos"], "readwrite");
             _db = transaction.objectStore("Pedidos").delete(_id);
-    
+
             $('#content').html("");
             let body = '';
             body = 'Deletado o pedido.';
             $("#content").append(body);
-
             $("#myModal").modal();
             $("#myModal").modal({ keyboard: false });
             $("#myModal").modal('show');
@@ -343,119 +310,152 @@
     }
 </script>
 
-<form>
-    <div stype="padding: 5px;">
-        <div class="table-responsive">
-            <div class="center">
-                <p><b>Entrada do Pedido</b></p>
-            </div>
+@section Scripts {
+
+<script src="~/js/jquery-ui.min1.12.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#cliente').autocomplete({
+                source: 'api/cliente/getall',
+                select: function (event, ui) {
+                    //set tagids to save
+                    $("#cliente").val(ui.item.id);
+
+                    //Tags for display
+                    this.value = ui.item.value;
+                    return false;
+                }
+            });
+        });
+    </script>
+ }
 
 
-            <table class="table table-borderless">
-                <tr>
-                    <td>
-                        <label for="nome">Pedido</label>
-                    </td>
-                    <td>
-                        <input type="text" disabled class="form-control" id="numero" name="numero" value="@ViewBag.numero">
-                        <input type="hidden" class="form-control" id="datanow" format="dd/MM/yyyy" name="datanow" value="@ViewBag.dataNow">
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label for="nome">Produto</label>
-                    </td>
-                    <td>
-                        <select id="produtoId" class="form-control">
-                            <option value=0 selected="selected"></option>
-                            <option value=1>Auto-Carros</option>
-                            <option value=2>Lojas Ferragens</option>
-                            <option value=3>Studio D4</option>
-                        </select>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label for="nome">Entrega</label>
-                    </td>
-                    <td>
-                        <input type="date" class="form-control" id="DataEntrega" name="DataEntrega" format="dd/MM/yyyy" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label for="nome">Quantidade</label>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" id="quantidade" name="quantidade" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label for="nome">Observação</label>
-                    </td>
-                    <td>
-                        <textarea class="form-control" id="observacao" rows="2"></textarea>
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-    </div>
 
 
-    <div class="container">
-        <div class="row">
-            <div class="col-4">
-                <input type="button" class="btn btn-primary" name="addBtn" value="Adicionar" id="addBtn" style="width: 90px; height:40px" />
-            </div>
-            <div class="col-4">
-                <input type="button" class="btn btn-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 90px; height:40px" data-toggle="modal" data-target="#myModal" />
-            </div>
-            <div class="col-4">
-                <i class='fas fa-cloud-upload-alt' style='font-size:15px;color:blue; position:absolute; left:25px; top:12px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
-                <input type="button" class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 40px; height:40px" />
-            </div>
-            <script>
-                $(document).ready(function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
-            </script>
-
-            <br />
-
-            <!-- Modal -->
-            <div id="myModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Seus Pedidos</h5>
-
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-
-                            <div id="content"></div>
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                        </div>
-                    </div>
-
+    <form>
+        <div stype="padding: 5px;">
+            <div class="table-responsive">
+                <div class="center">
+                    <p><b>Entrada do Pedido</b></p>
                 </div>
+
+
+                <table class="table table-borderless">
+                    <tr>
+                        <td>
+                            <label for="nome">Pedido</label>
+                        </td>
+                        <td>
+                            <input type="text" disabled class="form-control" id="numero" name="numero" value="@ViewBag.numero">
+                            <input type="hidden" class="form-control" id="datanow" format="dd/MM/yyyy" name="datanow" value="@ViewBag.dataNow">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="nome">Cliente</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" id="cliente" name="cliente">
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="nome">Produto</label>
+                        </td>
+                        <td>
+                            <select id="produtoId" class="form-control">
+                                <option value=0 selected="selected"></option>
+                                <option value=1>Auto-Carros</option>
+                                <option value=2>Lojas Ferragens</option>
+                                <option value=3>Studio D4</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="nome">Entrega</label>
+                        </td>
+                        <td>
+                            <input type="date" class="form-control" id="DataEntrega" name="DataEntrega" format="dd/MM/yyyy" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="nome">Quantidade</label>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" id="quantidade" name="quantidade" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label for="nome">Observação</label>
+                        </td>
+                        <td>
+                            <textarea class="form-control" id="observacao" rows="2"></textarea>
+                        </td>
+                    </tr>
+                </table>
+
             </div>
-            <!-- Modal -->
         </div>
-    </div>
 
 
-</form>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <input type="button" class="btn btn-primary" name="addBtn" value="Adicionar" id="addBtn" style="width: 90px; height:40px" />
+                </div>
+                <div class="col-4">
+                    <input type="button" class="btn btn-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 90px; height:40px" data-toggle="modal" data-target="#myModal" />
+                </div>
+                <div class="col-4">
+                    <i class='fas fa-cloud-upload-alt' style='font-size:15px;color:blue; position:absolute; left:25px; top:12px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
+                    <input type="button" class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 40px; height:40px" />
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $('[data-toggle="tooltip"]').tooltip();
+                    });
+                </script>
+
+                <br />
+
+                <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Seus Pedidos</h5>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div id="content"></div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Modal -->
+            </div>
+        </div>
+
+
+    </form>
