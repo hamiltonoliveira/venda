@@ -4,6 +4,12 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\jquery-1.10.2.js" />
+    <Content Remove="wwwroot\js\jquery-ui.js" />
+    <Content Remove="wwwroot\js\jquery-ui.min1.12.1.js" />
+  </ItemGroup>
  
 
   <ItemGroup>

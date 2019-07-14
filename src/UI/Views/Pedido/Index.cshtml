@@ -310,152 +310,168 @@
     }
 </script>
 
-@section Scripts {
-
-<script src="~/js/jquery-ui.min1.12.1.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#cliente').autocomplete({
-                source: 'api/cliente/getall',
-                select: function (event, ui) {
-                    //set tagids to save
-                    $("#cliente").val(ui.item.id);
-
-                    //Tags for display
-                    this.value = ui.item.value;
-                    return false;
-                }
-            });
-        });
-    </script>
- }
 
 
 
-
-    <form>
-        <div stype="padding: 5px;">
-            <div class="table-responsive">
-                <div class="center">
-                    <p><b>Entrada do Pedido</b></p>
-                </div>
-
-
-                <table class="table table-borderless">
-                    <tr>
-                        <td>
-                            <label for="nome">Pedido</label>
-                        </td>
-                        <td>
-                            <input type="text" disabled class="form-control" id="numero" name="numero" value="@ViewBag.numero">
-                            <input type="hidden" class="form-control" id="datanow" format="dd/MM/yyyy" name="datanow" value="@ViewBag.dataNow">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label for="nome">Cliente</label>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control" id="cliente" name="cliente">
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label for="nome">Produto</label>
-                        </td>
-                        <td>
-                            <select id="produtoId" class="form-control">
-                                <option value=0 selected="selected"></option>
-                                <option value=1>Auto-Carros</option>
-                                <option value=2>Lojas Ferragens</option>
-                                <option value=3>Studio D4</option>
-                            </select>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label for="nome">Entrega</label>
-                        </td>
-                        <td>
-                            <input type="date" class="form-control" id="DataEntrega" name="DataEntrega" format="dd/MM/yyyy" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label for="nome">Quantidade</label>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control" id="quantidade" name="quantidade" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label for="nome">Observação</label>
-                        </td>
-                        <td>
-                            <textarea class="form-control" id="observacao" rows="2"></textarea>
-                        </td>
-                    </tr>
-                </table>
-
+<form>
+    <div stype="padding: 5px;">
+        <div class="table-responsive">
+            <div class="center">
+                <p><b>Entrada do Pedido</b></p>
             </div>
+
+
+            <table class="table table-borderless">
+                <tr>
+                    <td>
+                        <label for="nome">Pedido</label>
+                    </td>
+                    <td>
+                        <input type="text" disabled class="form-control" id="numero" name="numero" value="@ViewBag.numero">
+                        <input type="hidden" class="form-control" id="datanow" format="dd/MM/yyyy" name="datanow" value="@ViewBag.dataNow">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Cliente</label>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="cliente" name="cliente" onblur="autocompletar();">
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Produto</label>
+                    </td>
+                    <td>
+                        <select id="produtoId" class="form-control">
+                            <option value=0 selected="selected"></option>
+                            <option value=1>Auto-Carros</option>
+                            <option value=2>Lojas Ferragens</option>
+                            <option value=3>Studio D4</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Entrega</label>
+                    </td>
+                    <td>
+                        <input type="date" class="form-control" id="DataEntrega" name="DataEntrega" format="dd/MM/yyyy" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Quantidade</label>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="quantidade" name="quantidade" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="nome">Observação</label>
+                    </td>
+                    <td>
+                        <textarea class="form-control" id="observacao" rows="2"></textarea>
+                    </td>
+                </tr>
+            </table>
+
         </div>
+    </div>
 
 
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    <input type="button" class="btn btn-primary" name="addBtn" value="Adicionar" id="addBtn" style="width: 90px; height:40px" />
-                </div>
-                <div class="col-4">
-                    <input type="button" class="btn btn-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 90px; height:40px" data-toggle="modal" data-target="#myModal" />
-                </div>
-                <div class="col-4">
-                    <i class='fas fa-cloud-upload-alt' style='font-size:15px;color:blue; position:absolute; left:25px; top:12px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
-                    <input type="button" class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 40px; height:40px" />
-                </div>
-                <script>
-                    $(document).ready(function () {
-                        $('[data-toggle="tooltip"]').tooltip();
-                    });
-                </script>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <input type="button" class="btn btn-primary" name="addBtn" value="Adicionar" id="addBtn" style="width: 90px; height:40px" />
+            </div>
+            <div class="col-4">
+                <input type="button" class="btn btn-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 90px; height:40px" data-toggle="modal" data-target="#myModal" />
+            </div>
+            <div class="col-4">
+                <i class='fas fa-cloud-upload-alt' style='font-size:15px;color:blue; position:absolute; left:25px; top:12px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
+                <input type="button" class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 40px; height:40px" />
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+            </script>
 
-                <br />
+            <br />
 
-                <!-- Modal -->
-                <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Seus Pedidos</h5>
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Seus Pedidos</h5>
 
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-
-                                <div id="content"></div>
-
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
+                        <div class="modal-body">
 
+                            <div id="content"></div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
                     </div>
+
                 </div>
-                <!-- Modal -->
             </div>
+            <!-- Modal -->
         </div>
+    </div>
 
 
-    </form>
+</form>
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script type="text/javascript">
+    function autocompletar() {
+        let msg = document.getElementById("cliente").value;
+        $.ajax({
+            url: 'cliente/get/' + msg,
+            type: 'GET',
+            data: '',
+            success: function (data) {
+               var items = [];
+                $.each(data, function (key, val) {
+                    items.push("<li id='" + key + "'>" + val + "</li>");
+                    //console.log(val.nome);
+                    //console.log(val.id);
+                    $("#cliente").val(val.nome);
+
+                    $('<ul/>', {
+                        'class': 'my-new-list',
+                        html: items.join('')
+                    }).appendTo('body');
+
+                });
+
+            },
+            error: function (e) {
+                //called when there is an error
+                //console.log(e.message);
+            }
+        });
+    }
+</script>
