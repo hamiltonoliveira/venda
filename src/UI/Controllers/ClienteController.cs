@@ -55,10 +55,10 @@ namespace UI.Controllers
         [HttpGet("Get/{nome}")]
         public ActionResult<IEnumerable<Cliente>> Tudo(string nome)
         {
-            var Clientes = _Repositorio.Where(p=>p.Nome.Contains(nome)).ToList();
+            var Clientes = _Repositorio.Where(p=>p.Nome.Contains(nome)).OrderBy(x=>x.Nome).ToList();
             return Ok(Clientes);
         }
 
-
+        
     }
 }

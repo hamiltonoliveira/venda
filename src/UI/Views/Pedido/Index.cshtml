@@ -70,10 +70,10 @@
         }
         $("#addBtn").click(function () {
             var numero = $("#numero").val();
-            var produtoId = $("#produtoId option:selected").val();
+            var produtoId = $("#produtooption option:selected").val();
             var DataEntrega = $("#DataEntrega").val();
             var DataPedido = $("#datanow").val();
-            var ClienteId = 1;
+            var ClienteId = $("#clienteoption option:selected").val();
             var VendedorId = getCookie("D4User");
             var quantidade = $("#quantidade").val();
             var observacao = $("#observacao").val();
@@ -89,7 +89,7 @@
                 return false;
             }
 
-            if (produtoId == "0" || DataEntrega == "" || quantidade == "") {
+            if (produtoId == "0" || DataEntrega == "" || quantidade == "" || clienteoption == "0") {
                 return false;
             }
 
@@ -311,7 +311,67 @@
 </script>
 
 
+<script type="text/javascript">
+    function autocompletarCli() {
+        let msg1 = document.getElementById("cliente").value;
+        if (msg1 == null) {
+            return false;
+        }
+        else {
+        $.ajax({
+            url: 'cliente/get/' + msg1,
+            type: 'GET',
+            data: '',
+            success: function (data) {
+                var items = [];
+                $('#clienteoption').empty();
+                $("p").show( "slow" );
+                $.each(data, function (key, val) {
+                        var x = document.getElementById("clienteoption");
+                        var option = document.createElement("option");
+                        option.text = val.nome;
+                        option.value = val.id;
+                        x.add(option);
+                });
+                $('#cliente').val(null);
+            },
+            error: function (e) {
+              }
+        });
+        }
+    }
+</script>
 
+<script type="text/javascript">
+    function autocompletarProd() {
+        let msg2 = document.getElementById("produto").value;
+        if (msg2 == null) {
+            return false;
+        }
+        else {
+        $.ajax({
+            url: 'produto/get/' + msg2,
+            type: 'GET',
+            data: '',
+            success: function (data) {
+                var items = [];
+                $('#produtooption').empty();
+                $("p").show("slow");
+                $.each(data, function (key, val) {
+                    var x = document.getElementById("produtooption");
+                    var option = document.createElement("option");
+                    option.text = val.nome;
+                    option.value = val.id;
+                    x.add(option);
+                });
+                $('#produto').val(null);
+            },
+            error: function (e) {
+            }
+        });
+        }
+    }
+</script>
 
 <form>
     <div stype="padding: 5px;">
@@ -319,8 +379,6 @@
             <div class="center">
                 <p><b>Entrada do Pedido</b></p>
             </div>
-
-
             <table class="table table-borderless">
                 <tr>
                     <td>
@@ -337,7 +395,10 @@
                         <label for="nome">Cliente</label>
                     </td>
                     <td>
-                        <input type="text" class="form-control" id="cliente" name="cliente" onblur="autocompletar();">
+                        <input type="text" class="form-control" id="cliente" name="cliente" onblur="autocompletarCli();">
+                        <p style="display: none">
+                        <select  id="clienteoption" size="2" name="clienteoption" class="form-control"></select>
+                        </p>
 
                     </td>
                 </tr>
@@ -347,12 +408,10 @@
                         <label for="nome">Produto</label>
                     </td>
                     <td>
-                        <select id="produtoId" class="form-control">
-                            <option value=0 selected="selected"></option>
-                            <option value=1>Auto-Carros</option>
-                            <option value=2>Lojas Ferragens</option>
-                            <option value=3>Studio D4</option>
-                        </select>
+                       <input type="text" class="form-control" id="produto" name="produto" onblur="autocompletarProd();">
+                        <p style="display: none">
+                            <select id="produtooption" size="2" name="produtooption" class="form-control"></select>
+                        </p>
                     </td>
                 </tr>
 
@@ -383,7 +442,6 @@
                     </td>
                 </tr>
             </table>
-
         </div>
     </div>
 
@@ -404,10 +462,8 @@
                 $(document).ready(function () {
                     $('[data-toggle="tooltip"]').tooltip();
                 });
-            </script>
-
+             </script>
             <br />
-
             <!-- Modal -->
             <div id="myModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -440,38 +496,3 @@
 
 </form>
 
-
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<script type="text/javascript">
-    function autocompletar() {
-        let msg = document.getElementById("cliente").value;
-        $.ajax({
-            url: 'cliente/get/' + msg,
-            type: 'GET',
-            data: '',
-            success: function (data) {
-               var items = [];
-                $.each(data, function (key, val) {
-                    items.push("<li id='" + key + "'>" + val + "</li>");
-                    //console.log(val.nome);
-                    //console.log(val.id);
-                    $("#cliente").val(val.nome);
-
-                    $('<ul/>', {
-                        'class': 'my-new-list',
-                        html: items.join('')
-                    }).appendTo('body');
-
-                });
-
-            },
-            error: function (e) {
-                //called when there is an error
-                //console.log(e.message);
-            }
-        });
-    }
-</script>

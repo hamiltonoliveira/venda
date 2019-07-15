@@ -45,7 +45,7 @@ namespace ApplicationCore.Services.Services
 
         public IEnumerable<Produto> Where(Expression<Func<Produto, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _repository.Where(expression);
         }
     }
 
