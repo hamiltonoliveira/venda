@@ -51,7 +51,7 @@ namespace ApplicationCore.Services.Services
 
         IEnumerable<Usuario> IServices.IServices<Usuario>.Where(Expression<Func<Usuario, bool>> expression)
         {
-            throw new NotImplementedException();
+            return _repository.Where(expression);
         }
     }
 }

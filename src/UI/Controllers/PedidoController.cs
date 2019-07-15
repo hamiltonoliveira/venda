@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using ApplicationCore.Entities;
 using ApplicationCore.Services.IServices;
@@ -39,12 +40,7 @@ namespace UI.Controllers
             }
             await _Repositorio.InsertAsync(pedido);
             return Ok(pedido);
-        }
-
-
-
-
-
-    }
+          }
+     }
 }
 

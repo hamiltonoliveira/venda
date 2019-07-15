@@ -170,9 +170,9 @@
                 var cursor = evt.target.result;
                 if (cursor) {
                     contar += 1;
-                    PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
-
-                    if (typeof evt.target.result != 'undefined') {
+                
+                    if (typeof evt.target.result != 'undefined' && online == true) {
+                        PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
                         db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(cursor.value.id);
                     }
                     cursor.continue();
@@ -181,7 +181,6 @@
                 let body = '';
                 body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + '</span>';
                 $("#content").append(body);
-
                 $("#myModal").modal();
                 $("#myModal").modal({ keyboard: false });
                 $("#myModal").modal('show');
@@ -264,6 +263,10 @@
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
                 success: function (data) {
+
+                 //aqui podemos ver o retorno do json
+                    console.log(data);
+
                 },
             });
         }
