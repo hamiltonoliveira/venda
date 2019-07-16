@@ -59,6 +59,5 @@ namespace UI.Controllers
             return Ok(Clientes);
         }
 
-        
     }
 }

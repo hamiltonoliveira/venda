@@ -15,3 +15,4 @@ C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCor
 C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.AssemblyInfo.cs
 C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.dll
 C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.pdb
+C:\Desenvolvimento\D4\src\ApplicationCore\obj\Debug\netcoreapp2.2\ApplicationCore.csprojAssemblyReference.cache

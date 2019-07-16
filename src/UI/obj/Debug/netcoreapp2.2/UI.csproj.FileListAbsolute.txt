@@ -77,3 +77,4 @@ C:\Desenvolvimento\D4\src\UI\obj\Debug\netcoreapp2.2\UI.csproj.CopyComplete
 C:\Desenvolvimento\D4\src\UI\obj\Debug\netcoreapp2.2\UI.dll
 C:\Desenvolvimento\D4\src\UI\obj\Debug\netcoreapp2.2\UI.pdb
 C:\Desenvolvimento\D4\src\UI\obj\Debug\netcoreapp2.2\Razor\Views\Cliente\Index.g.cshtml.cs
+C:\Desenvolvimento\D4\src\UI\obj\Debug\netcoreapp2.2\Razor\Views\Cliente\PartialCliente.g.cshtml.cs
