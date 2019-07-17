@@ -1,17 +1,18 @@
 ﻿<!-- Default form register -->
-<form class="text-center border border-light p-5" action="#!">
-    <p>
-        Cadastro de Cliente
-    </p>
 
-    <div class="form-row mb-4">
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<link href="~/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<form class="text-center border border-light p-5" action="#!">
+      <div class="form-row mb-4">
         <div class="col">
             <input type="text" id="Nome" name="nome" class="form-control" placeholder="Nome">
         </div>
         <div class="col">
             <input type="text" id="Contato" name="Contato" class="form-control" placeholder="Contato">
         </div>
-
     </div>
 
     <p>
@@ -24,14 +25,16 @@
 
     <div class="form-row mb-4">
         <div class="col">
-            <input type="text" id="Celular" name="Celular" class="form-control" placeholder="Celular">
+            <input type="text" id="Celular" name="Celular" class="form-control" placeholder="Celular" maxlength="12" OnKeyPress="formatar('##-###-#####', this)">
         </div>
         <div class="col">
-            <input type="text" id="Telefone" name="Telefone" class="form-control" placeholder="Telefone">
+            <input type="text" id="Telefone" name="Telefone" class="form-control" placeholder="Telefone" maxlength="12" OnKeyPress="formatar('##-###-#####', this)">
         </div>
     </div>
 
-    <hr>
+    <p>
+        <input type="text" id="Cep" name="Cep" class="form-control mb-4" placeholder="Cep" onblur="buscaCep();" maxlength="9" OnKeyPress="formatar('#####-###', this)">
+    </p>
 
     <p>
         <input type="text" id="Endereco" name="Endereco" class="form-control" placeholder="Endereco">
@@ -49,15 +52,32 @@
         <input type="text" id="Estado" name="Estado" class="form-control" placeholder="Estado">
     </p>
 
-    <p>
-        <input type="text" id="Cep" name="Cep" class="form-control mb-4" placeholder="Cep" onblur="buscaCep();">
-    </p>
-
+  
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <input type="button" class="btn btn-outline-primary" name="addBtn" value="Inserir" id="addBtn" style="width:70px; height:40px" />
+            </div>
+            <div class="col-4">
+                <input type="button" class="btn btn-outline-primary" name="ListarBtn" value="Listar" id="ListarBtn" style="width:70px; height:40px" />
+            </div>
+            <div class="col-4">
+                <button class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 50px; height:40px" ><i class="fa fa-refresh" aria-hidden="true"  data-toggle="tooltip" title="Sincronizar os clientes."></i></button>
+            </div>
+        </div>
+    </div>
 
 
 
 </form>
 <!-- Default form register -->
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 
 
 <script type="text/javascript">
@@ -73,7 +93,7 @@
                 data: '',
                 success: function (data) {
 
-               
+
                     $.each(data, function (key, val) {
 
                         if (key == 'logradouro') {
@@ -84,7 +104,7 @@
                             $('#Bairro').val(val);
                         }
 
-                        
+
                         if (key == 'localidade') {
                             $('#Cidade').val(val);
                         }
@@ -92,13 +112,32 @@
                         if (key == 'uf') {
                             $('#Estado').val(val);
                         }
-                        
+
                     });
-               
+
                 },
                 error: function (e) {
                 }
             });
         }
+    }
+</script>
+
+<style type="text/css">
+    .tabela {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 10px;
+    }
+</style>
+<script>
+    function formatar(mascara, documento) {
+        var i = documento.value.length;
+        var saida = mascara.substring(0, 1);
+        var texto = mascara.substring(i)
+
+        if (texto.substring(0, 1) != saida) {
+            documento.value += texto.substring(0, 1);
+        }
+
     }
 </script>

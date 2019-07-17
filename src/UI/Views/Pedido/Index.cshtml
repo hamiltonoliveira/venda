@@ -170,7 +170,7 @@
                 var cursor = evt.target.result;
                 if (cursor) {
                     contar += 1;
-                
+
                     if (typeof evt.target.result != 'undefined' && online == true) {
                         PedidoPostar(cursor.value.numero, cursor.value.produtoId, cursor.value.DataEntrega, cursor.value.DataPedido, cursor.value.VendedorId, cursor.value.ClienteId, cursor.value.quantidade, cursor.value.observacao);
                         db.transaction(["Pedidos"], "readwrite").objectStore("Pedidos").delete(cursor.value.id);
@@ -184,7 +184,7 @@
                 } else {
                     body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + ' registro.</span>';
                 }
-               
+
                 $("#content").append(body);
                 $("#myModal").modal();
                 $("#myModal").modal({ keyboard: false });
@@ -268,7 +268,7 @@
                     xhr.setRequestHeader("Content-Type", "application/json");
                 },
                 success: function (data) {
-                 //aqui podemos ver o retorno do json
+                    //aqui podemos ver o retorno do json
                     console.log(data);
                 },
             });
@@ -324,26 +324,26 @@
             return false;
         }
         else {
-        $.ajax({
-            url: 'cliente/get/' + msg1,
-            type: 'GET',
-            data: '',
-            success: function (data) {
-                var items = [];
-                $('#clienteoption').empty();
-                $("p").show( "slow" );
-                $.each(data, function (key, val) {
+            $.ajax({
+                url: 'cliente/get/' + msg1,
+                type: 'GET',
+                data: '',
+                success: function (data) {
+                    var items = [];
+                    $('#clienteoption').empty();
+                    $("p").show("slow");
+                    $.each(data, function (key, val) {
                         var x = document.getElementById("clienteoption");
                         var option = document.createElement("option");
                         option.text = val.nome;
                         option.value = val.id;
                         x.add(option);
-                });
-                $('#cliente').val(null);
-            },
-            error: function (e) {
-              }
-        });
+                    });
+                    $('#cliente').val(null);
+                },
+                error: function (e) {
+                }
+            });
         }
     }
 </script>
@@ -355,118 +355,141 @@
             return false;
         }
         else {
-        $.ajax({
-            url: 'produto/get/' + msg2,
-            type: 'GET',
-            data: '',
-            success: function (data) {
-                var items = [];
-                $('#produtooption').empty();
-                $("p").show("slow");
-                $.each(data, function (key, val) {
-                    var x = document.getElementById("produtooption");
-                    var option = document.createElement("option");
-                    option.text = val.nome;
-                    option.value = val.id;
-                    x.add(option);
-                });
-                $('#produto').val(null);
-            },
-            error: function (e) {
-            }
-        });
+            $.ajax({
+                url: 'produto/get/' + msg2,
+                type: 'GET',
+                data: '',
+                success: function (data) {
+                    var items = [];
+                    $('#produtooption').empty();
+                    $("p").show("slow");
+                    $.each(data, function (key, val) {
+                        var x = document.getElementById("produtooption");
+                        var option = document.createElement("option");
+                        option.text = val.nome;
+                        option.value = val.id;
+                        x.add(option);
+                    });
+                    $('#produto').val(null);
+                },
+                error: function (e) {
+                }
+            });
         }
     }
 </script>
 
-@*<form class="text-center border border-light p-1" action="#!">*@
-    <div class="container">
-        <div stype="padding: 5px;">
+<div class="container">
+    <div stype="padding: 5px;">
+        <form class="text-center border border-light p-5" action="#!">
+            <p>
+                <input type="hidden" disabled class="form-control" id="numero" name="numero" value="@ViewBag.numero">
+                <input type="hidden" class="form-control" id="datanow" format="dd/MM/yyyy" name="datanow" value="@ViewBag.dataNow">
+            </p>
+
+            <p>
+                <input type="text" placeholder="Cliente" class="form-control mb-1" id="cliente" name="cliente" onblur="autocompletarCli();">
+            <p style="display: none">
+                <select id="clienteoption" size="2" name="clienteoption" class="form-control"></select>
+            </p>
+
+            <p>
+                <input type="text" placeholder="Produto" class="form-control  mb-1" id="produto" name="produto" onblur="autocompletarProd();">
+            <p style="display: none">
+                <select id="produtooption" size="2" name="produtooption" class="form-control mb-4"></select>
+            </p>
+            </p>
+
+            <p>
+                <input type="date" class="form-control mb-1" id="DataEntrega" name="DataEntrega" format="dd/MM/yyyy" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+            </p>
+
+            <p>
+                <input type="text" placeholder="Quantidade" class="form-control mb-1" id="quantidade" name="quantidade" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            </p>
+            <textarea class="form-control mb-1" placeholder="Observação" id="observacao" name="observacao" rows="2"></textarea>
+        </form>
 
 
-            <form class="text-center border border-light p-5" action="#!">
+    </div>
+</div>
 
-                <p>
-                    <input type="text" disabled class="form-control" id="numero" name="numero" value="@ViewBag.numero">
-                    <input type="hidden" class="form-control" id="datanow" format="dd/MM/yyyy" name="datanow" value="@ViewBag.dataNow">
-                </p>
-
-                <p>
-                    <input type="text" placeholder="Cliente" class="form-control mb-1" id="cliente" name="cliente" onblur="autocompletarCli();">
-                <p style="display: none">
-                    <select id="clienteoption" size="2" name="clienteoption" class="form-control"></select>
-                </p>
-
-                <p>
-                    <input type="text" placeholder="Produto" class="form-control  mb-1" id="produto" name="produto" onblur="autocompletarProd();">
-                <p style="display: none">
-                    <select id="produtooption" size="2" name="produtooption" class="form-control mb-4"></select>
-                </p>
-                </p>
-
-                <p>
-                    <input type="date" class="form-control mb-1" id="DataEntrega" name="DataEntrega" format="dd/MM/yyyy" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                </p>
-
-                <p>
-                    <input type="text" placeholder="Quantidade" class="form-control mb-1" id="quantidade" name="quantidade" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                </p>
-
-                <textarea class="form-control mb-1" placeholder="Observação" id="observacao" name="observacao" rows="2"></textarea>
-            </form>
-               
-
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <input type="button" class="btn btn-outline-primary" name="addBtn" value="Adicionar" id="addBtn" style="width:80px; height:40px" />
         </div>
+        <div class="col-3">
+            <input type="button" class="btn btn-outline-primary" name="ListarBtn" value="Pedidos" id="ListarBtn" style="width: 80px; height:40px" data-toggle="modal" data-target="#myModal1" />
+        </div>
+        <div class="col-3">
+            <input type="button" class="btn btn-outline-primary" name="ClienteBtn" value="Cliente" id="ClienteBtn" style="width: 80px; height:40px" data-toggle="modal" data-target="#myModal2" />
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    <input type="button" class="btn btn-outline-primary" name="addBtn" value="Adicionar" id="addBtn" style="width:80px; height:40px" />
+        <div class="col-3">
+            <button class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 50px; height:40px"><i class="fa fa-refresh" aria-hidden="true" data-toggle="tooltip" title="Sincronizar os clientes."></i></button>
+        </div>
+   
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <br />
+    <!-- Modal -->
+    <div id="myModal1" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Seus Pedidos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="col-4">
-                    <input type="button" class="btn btn-outline-primary" name="ListarBtn" value="Listagem" id="ListarBtn" style="width: 80px; height:40px" data-toggle="modal" data-target="#myModal" />
+                <div class="modal-body">
+                    <div id="content"></div>
                 </div>
-                <div class="col-4">
-                    <i class='fas fa-cloud-upload-alt' style='font-size:15px;color:blue; position:absolute; left:25px; top:12px' data-toggle="tooltip" title="Sincronizar os Pedidos."></i>
-                    <input type="button" class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 40px; height:40px" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
 
-            <script>
-                $(document).ready(function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
-            </script>
-            <br />
-            <!-- Modal -->
-            <div id="myModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Seus Pedidos</h5>
+        </div>
+    </div>
+    <!-- Modal -->
+    <!-- Modal -->
+    <div id="myModal2" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cliente</h5>
 
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-
-                            <div id="content"></div>
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                        </div>
-                    </div>
-
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("../Cliente/PartialCliente.cshtml")
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
-            <!-- Modal -->
+
         </div>
-  
- 
+    </div>
+    <!-- Modal -->
+
+
+
+
+
+</div>
+
+
 @*</form>*@
 
