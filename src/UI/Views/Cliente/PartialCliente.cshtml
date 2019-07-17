@@ -4,40 +4,101 @@
         Cadastro de Cliente
     </p>
 
-        <div class="form-row mb-4">
-            <div class="col">
-                <input type="text" id="Nome" name="nome" class="form-control" placeholder="Nome">
-            </div>
-            <div class="col">
-                <input type="text" id="Contato" name="Contato" class="form-control" placeholder="Contato">
-            </div>
-
+    <div class="form-row mb-4">
+        <div class="col">
+            <input type="text" id="Nome" name="nome" class="form-control" placeholder="Nome">
+        </div>
+        <div class="col">
+            <input type="text" id="Contato" name="Contato" class="form-control" placeholder="Contato">
         </div>
 
-        <p>
-            <input type="text" id="Documento" name="Documento" class="form-control" placeholder="Documento">
-        </p>
+    </div>
 
-        <p>
-            <input type="email" id="email" name="email" class="form-control mb-4" placeholder="E-mail">
-        </p>
+    <p>
+        <input type="text" id="Documento" name="Documento" class="form-control" placeholder="Documento">
+    </p>
 
-        <div class="form-row mb-4">
-            <div class="col">
-                <input type="text" id="Celular" name="Celular" class="form-control" placeholder="Celular">
-            </div>
-            <div class="col">
-                <input type="text" id="Telefone" name="Telefone" class="form-control" placeholder="Telefone">
-            </div>
+    <p>
+        <input type="email" id="email" name="email" class="form-control mb-4" placeholder="E-mail">
+    </p>
+
+    <div class="form-row mb-4">
+        <div class="col">
+            <input type="text" id="Celular" name="Celular" class="form-control" placeholder="Celular">
         </div>
+        <div class="col">
+            <input type="text" id="Telefone" name="Telefone" class="form-control" placeholder="Telefone">
+        </div>
+    </div>
 
-        <p>
-            <input type="text" id="Cep" name="Cep" class="form-control mb-4" placeholder="Cep">
-        </p>
+    <hr>
 
-        <hr>
+    <p>
+        <input type="text" id="Endereco" name="Endereco" class="form-control" placeholder="Endereco">
+    </p>
+    <p>
+        <input type="text" id="Complemento" name="Complemento" class="form-control" placeholder="Complemento">
+    </p>
+    <p>
+        <input type="text" id="Bairro" name="Bairro" class="form-control" placeholder="Bairro">
+    </p>
+    <p>
+        <input type="text" id="Cidade" name="Cidade" class="form-control" placeholder="Cidade">
+    </p>
+    <p>
+        <input type="text" id="Estado" name="Estado" class="form-control" placeholder="Estado">
+    </p>
+
+    <p>
+        <input type="text" id="Cep" name="Cep" class="form-control mb-4" placeholder="Cep" onblur="buscaCep();">
+    </p>
+
 
 
 
 </form>
 <!-- Default form register -->
+
+
+<script type="text/javascript">
+    function buscaCep() {
+        let msg2 = document.getElementById("Cep").value;
+        if (msg2 == null) {
+            return false;
+        }
+        else {
+            $.ajax({
+                url: 'https://viacep.com.br/ws/' + msg2 + '/json/',
+                type: 'GET',
+                data: '',
+                success: function (data) {
+
+               
+                    $.each(data, function (key, val) {
+
+                        if (key == 'logradouro') {
+                            $('#Endereco').val(val);
+                        }
+
+                        if (key == 'bairro') {
+                            $('#Bairro').val(val);
+                        }
+
+                        
+                        if (key == 'localidade') {
+                            $('#Cidade').val(val);
+                        }
+
+                        if (key == 'uf') {
+                            $('#Estado').val(val);
+                        }
+                        
+                    });
+               
+                },
+                error: function (e) {
+                }
+            });
+        }
+    }
+</script>
