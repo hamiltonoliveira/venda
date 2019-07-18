@@ -69,6 +69,7 @@
             }
         }
         $("#addBtn").click(function () {
+
             var numero = $("#numero").val();
             var produtoId = $("#produtooption option:selected").val();
             var DataEntrega = $("#DataEntrega").val();
@@ -77,6 +78,8 @@
             var VendedorId = getCookie("D4User");
             var quantidade = $("#quantidade").val();
             var observacao = $("#observacao").val();
+
+          
 
             if (VendedorId == null) {
                 $('#content').html("");
@@ -88,6 +91,8 @@
                 $("#myModal").modal('show');
                 return false;
             }
+
+            console.log("AQUI");
 
             if (produtoId == "0" || DataEntrega == "" || quantidade == "" || clienteoption == "0") {
                 return false;
@@ -248,7 +253,7 @@
                 }
                 body = body + '</table>';
 
-                $("#content").append(body);
+               $("#content").append(body);
             };
         });
 
@@ -380,6 +385,13 @@
 </script>
 
 <div class="container">
+    <div class="modal-header light-blue darken-3 white-text">
+        <h4 class="title"><i class="fas fa-pencil-alt"></i> Pedido</h4>
+        <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
     <div stype="padding: 5px;">
         <form class="text-center border border-light p-5" action="#!">
             <p>
@@ -414,22 +426,20 @@
     </div>
 </div>
 
+<br />
 <div class="container">
     <div class="row">
         <div class="col-3">
             <input type="button" class="btn btn-outline-primary" name="addBtn" value="Adicionar" id="addBtn" style="width:80px; height:40px" />
         </div>
+
         <div class="col-3">
-            <input type="button" class="btn btn-outline-primary" name="ListarBtn" value="Pedidos" id="ListarBtn" style="width: 80px; height:40px" data-toggle="modal" data-target="#myModal1" />
-        </div>
-        <div class="col-3">
-            <input type="button" class="btn btn-outline-primary" name="ClienteBtn" value="Cliente" id="ClienteBtn" style="width: 80px; height:40px" data-toggle="modal" data-target="#myModal2" />
+            <input type="button" class="btn btn-outline-primary" name="ListarBtn" value="Pedidos" id="ListarBtn" style="width: 80px; height:40px" data-toggle="modal" data-target="#myModal" />
         </div>
 
         <div class="col-3">
             <button class="btn btn-outline-primary" name="sincronizaBtn" value="" id="sincronizaBtn" style="width: 50px; height:40px"><i class="fa fa-refresh" aria-hidden="true" data-toggle="tooltip" title="Sincronizar os clientes."></i></button>
         </div>
-   
     </div>
 
     <script>
@@ -439,7 +449,7 @@
     </script>
     <br />
     <!-- Modal -->
-    <div id="myModal1" class="modal fade" role="dialog">
+    <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -460,30 +470,6 @@
         </div>
     </div>
     <!-- Modal -->
-    <!-- Modal -->
-    <div id="myModal2" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Cliente</h5>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @Html.Partial("../Cliente/PartialCliente.cshtml")
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <!-- Modal -->
-
 
 
 
@@ -491,5 +477,5 @@
 </div>
 
 
-@*</form>*@
+
 

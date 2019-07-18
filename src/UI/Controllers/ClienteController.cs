@@ -26,7 +26,22 @@ namespace UI.Controllers
             return View();
         }
 
-        [HttpGet("getall")]
+
+        // POST: api/Usuario
+        [HttpPost("post")]
+        public async Task<ActionResult<Cliente>> PostCliente([FromBody] Cliente cliente)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _Repositorio.InsertAsync(cliente);
+            return Ok(cliente);
+        }
+  
+
+
+    [HttpGet("getall")]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
             //var claims = User.Claims.ToList();
