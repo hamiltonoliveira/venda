@@ -256,11 +256,8 @@
                                       cursor.value.Endereco, cursor.value.Complemento, cursor.value.Bairro,
                                       cursor.value.Cidade, cursor.value.Estado, cursor.value.Cep);
 
-                    db.transaction(["Cliente"], "readwrite").objectStore("Cliente").delete(cursor.value.id);
+                    //db.transaction(["Cliente"], "readwrite").objectStore("Cliente").delete(cursor.value.id);
                     }
-
-                   //console.log(cursor.value.Nome);
-
                     cursor.continue();
                 }
                 $('#content').html("");
@@ -290,7 +287,8 @@
             "Nome": _Nome, "Contato": _Contato, "cnpjcpf": _Documento, "Telefone": _Telefone, "Celular": _Celular, "Email": _Email,
             "Endereco": _Endereco, "Complemento": _Complemento, "Bairro": _Bairro, "Cidade": _Cidade, "Estado": _Estado, "Cep": _Cep
         };
-        $.ajax({
+
+          $.ajax({
             type: "POST",
             url: 'Cliente/post',
             data: JSON.stringify(json),
