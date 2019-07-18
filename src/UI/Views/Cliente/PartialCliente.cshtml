@@ -213,6 +213,70 @@
         });
 
 
+        $("#sincronizaBtn").click(function () {
+            var VendedorId = getCookie("D4User");
+            if (VendedorId == null) {
+                $('#content').html("");
+                let body = '';
+                body = 'Favor efetuar o seu Login.';
+                $("#content").append(body);
+
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+                return false;
+            }
+
+            online = window.navigator.onLine;
+            if (online == false) {
+                $('#content').html("");
+                let body = '';
+                body = 'Seu dispositivo não esta conectado na web.';
+                $("#content").append(body);
+
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+                return false;
+            };
+
+            var transaction = db.transaction("Cliente", "readwrite");
+            var objectStore = transaction.objectStore("Cliente");
+            var req = objectStore.openCursor();
+            var contar = 0;
+
+            req.onsuccess = function (evt) {
+                var cursor = evt.target.result;
+                if (cursor) {
+                    contar += 1;
+
+                    if (typeof evt.target.result != 'undefined' && online == true) {
+                        ClientePostar(cursor.value.Nome, cursor.value.Contato, cursor.value.Documento,
+                                      cursor.value.Telefone, cursor.value.Celular, cursor.value.Email,
+                                      cursor.value.Endereco, cursor.value.Complemento, cursor.value.Bairro,
+                                      cursor.value.Cidade, cursor.value.Estado, cursor.value.Cep);
+
+                    db.transaction(["Cliente"], "readwrite").objectStore("Cliente").delete(cursor.value.id);
+                    }
+
+                   //console.log(cursor.value.Nome);
+
+                    cursor.continue();
+                }
+                $('#content').html("");
+                let body = '';
+                if (contar >= 2) {
+                    body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + ' registros.</span>';
+                } else {
+                    body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + ' registro.</span>';
+                }
+
+                $("#content").append(body);
+                $("#myModal").modal();
+                $("#myModal").modal({ keyboard: false });
+                $("#myModal").modal('show');
+            };
+        });
 
 
 
@@ -221,11 +285,14 @@
 </script>
 
 <script>
-    function ClientePostar() {
-        var json = { "numero": _numero, "produtoId": _produtoId, "DataEntrega": _DataEntrega, "VendedorId": _VendedorId, "ClienteId": _ClienteId, "DataPedido": _DataPedido, "quantidade": _quantidade, "observacao": _observacao };
+    function ClientePostar(_Nome, _Contato, _Documento, _Telefone, _Celular, _Email, _Endereco, _Complemento, _Bairro, _Cidade, _Estado, _Cep) {
+        var json = {
+            "Nome": _Nome, "Contato": _Contato, "cnpjcpf": _Documento, "Telefone": _Telefone, "Celular": _Celular, "Email": _Email,
+            "Endereco": _Endereco, "Complemento": _Complemento, "Bairro": _Bairro, "Cidade": _Cidade, "Estado": _Estado, "Cep": _Cep
+        };
         $.ajax({
             type: "POST",
-            url: 'Pedido/post',
+            url: 'Cliente/post',
             data: JSON.stringify(json),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -236,10 +303,26 @@
                 xhr.setRequestHeader("Content-Type", "application/json");
             },
             success: function (data) {
-                //aqui podemos ver o retorno do json
+                
                 console.log(data);
             },
         });
+    }
+</script>
+
+<script>
+    function getCookie(c_name) {
+        if (document.cookie.length > 0) {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) {
+                    c_end = document.cookie.length;
+                }
+                return unescape(document.cookie.substring(c_start, c_end));
+            }
+        }
     }
 </script>
 

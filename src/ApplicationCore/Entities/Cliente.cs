@@ -20,5 +20,12 @@ namespace ApplicationCore.Entities
         public string Estado { get; set; }
         public string Cep { get; set; }
         public bool Ativo { get; set; }
+
+        public Cliente()
+        {
+            this.Ativo = true;
+            this.DataCadastro = DateTime.Now;
+        }
    }
+
 }
