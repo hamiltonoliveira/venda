@@ -83,9 +83,9 @@
                 let body = '';
                 body = 'Favor efetuar o seu Login.';
                 $("#content").append(body);
-                $("#myModal").modal();
-                $("#myModal").modal({ keyboard: false });
-                $("#myModal").modal('show');
+                $("#Modal").modal();
+                $("#Modal").modal({ keyboard: false });
+                $("#Modal").modal('show');
                 return false;
             }
 
@@ -119,9 +119,9 @@
             let body = '';
             body = 'Adicionado dados digitados.';
             $("#content").append(body);
-            $("#myModal").modal();
-            $("#myModal").modal({ keyboard: false });
-            $("#myModal").modal('show');
+            $("#Modal").modal();
+            $("#Modal").modal({ keyboard: false });
+            $("#Modal").modal('show');
             return false;
         });
 
@@ -155,9 +155,9 @@
                 body = 'Seu dispositivo não esta conectado na web.';
                 $("#content").append(body);
 
-                $("#myModal").modal();
-                $("#myModal").modal({ keyboard: false });
-                $("#myModal").modal('show');
+                $("#Modal").modal();
+                $("#Modal").modal({ keyboard: false });
+                $("#Modal").modal('show');
                 return false;
             };
 
@@ -186,9 +186,9 @@
                 }
 
                 $("#content").append(body);
-                $("#myModal").modal();
-                $("#myModal").modal({ keyboard: false });
-                $("#myModal").modal('show');
+                $("#Modal").modal();
+                $("#Modal").modal({ keyboard: false });
+                $("#Modal").modal('show');
             };
         });
 
@@ -206,9 +206,9 @@
                 body = 'Favor efetuar o seu Login.';
                 $("#content").append(body);
 
-                $("#myModal").modal();
-                $("#myModal").modal({ keyboard: false });
-                $("#myModal").modal('show');
+                $("#Modal").modal();
+                $("#Modal").modal({ keyboard: false });
+                $("#Modal").modal('show');
                 return false;
             }
 
@@ -249,6 +249,10 @@
                 body = body + '</table>';
 
                 $("#content").append(body);
+                $("#Modal").modal();
+                $("#Modal").modal({ keyboard: false });
+                $("#Modal").modal('show');
+                return false;
             };
         });
 
@@ -306,9 +310,9 @@
             let body = '';
             body = 'Deletado o pedido.';
             $("#content").append(body);
-            $("#myModal").modal();
-            $("#myModal").modal({ keyboard: false });
-            $("#myModal").modal('show');
+            $("#Modal").modal();
+            $("#Modal").modal({ keyboard: false });
+            $("#Modal").modal('show');
             return false;
             location.reload();
         }
@@ -442,7 +446,7 @@
     </script>
     <br />
     <!-- Modal -->
-    <div id="myModal1" class="modal fade" role="dialog">
+    <div id="Modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">

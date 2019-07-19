@@ -4,8 +4,231 @@
 <script src="~/js/bootstrap.min.js"></script>
 <link href="~/css/font-awesome.min.css" rel="stylesheet" />
 
+
+
+<script type="text/javascript">
+    function buscaCep() {
+        let msg2 = document.getElementById("Cep").value;
+        if (msg2 == null) {
+            return false;
+        }
+        else {
+            $.ajax({
+                url: 'https://viacep.com.br/ws/' + msg2 + '/json/',
+                type: 'GET',
+                data: '',
+                success: function (data) {
+                    $.each(data, function (key, val) {
+
+                        if (key == 'logradouro') {
+                            $('#Endereco').val(val);
+                        }
+                        if (key == 'bairro') {
+                            $('#Bairro').val(val);
+                        }
+                        if (key == 'localidade') {
+                            $('#Cidade').val(val);
+                        }
+                        if (key == 'uf') {
+                            $('#Estado').val(val);
+                        }
+                    });
+                },
+                error: function (e) {
+                    //se não achar o endereco
+                }
+            });
+        }
+    }
+</script>
+
+
+<script>
+    function formatar(mascara, documento) {
+        var i = documento.value.length;
+        var saida = mascara.substring(0, 1);
+        var texto = mascara.substring(i)
+
+        if (texto.substring(0, 1) != saida) {
+            documento.value += texto.substring(0, 1);
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+        var request, db;
+        if (!window.indexedDB) {
+            console.log("Seu navegador não suporta o recurso HTML5 IndexedDB");
+        }
+        else {
+            request = window.indexedDB.open("D5", 1);
+            request.onerror = function (event) {
+                console.log("Erro ao abrir o banco de dados", event);
+            }
+
+            request.onupgradeneeded = function (event) {
+                console.log("Atualizando");
+                db = event.target.result;
+                var objectStore = db.createObjectStore("Cliente", { keyPath: "id", autoIncrement: true });
+            };
+            request.onsuccess = function (event) {
+                console.log("Banco de dados aberto com sucesso");
+                db = event.target.result;
+            }
+        };
+
+        $("#addBtn").click(function () {
+            var Nome = $("#Nome").val();
+            var Contato = $("#Contato").val();
+            var Documento = $("#Documento").val();
+            var Celular = $("#Celular").val();
+            var Telefone = $("#Telefone").val();
+            var Email = $("#Email").val();
+            var Cep = $("#Cep").val();
+            var Endereco = $("#Endereco").val();
+            var Complemento = $("#Complemento").val();
+            var Bairro = $("#Bairro").val();
+            var Cidade = $("#Cidade").val();
+            var Estado = $("#Estado").val();
+
+            var transaction = db.transaction(["Cliente"], "readwrite");
+            transaction.oncomplete = function (event) {
+                console.log("Sucesso :)");
+                $("#result").html("Adicionado com Sucesso");
+            };
+            transaction.onerror = function (event) {
+                console.log("Erro :(");
+                $("#result").html("Erro ao Adicionar");
+            };
+
+            var objectStore = transaction.objectStore("Cliente");
+            objectStore.add({ Nome: Nome, Contato: Contato, Documento: Documento, Celular: Celular, Telefone: Telefone, Email: Email, Cep: Cep, Endereco: Endereco, Complemento: Complemento, Bairro: Bairro, Cidade: Cidade, Estado: Estado });
+
+            $('#content').html("");
+            let body = '';
+            body = 'Adicionado dados digitados.';
+            $("#content").append(body);
+            $("Modal").modal();
+            $("#Modal").modal({ keyboard: false });
+            $("#Modal").modal('show');
+            return false;
+        });
+
+
+        $("#sincronizaBtn").click(function () {
+            var VendedorId = getCookie("D4User");
+            if (VendedorId == null) {
+                $('#content').html("");
+                let body = '';
+                body = 'Favor efetuar o seu Login.';
+                $("#content").append(body);
+
+                $("#Modal").modal();
+                $("#Modal").modal({ keyboard: false });
+                $("#Modal").modal('show');
+                return false;
+            }
+
+            online = window.navigator.onLine;
+            if (online == false) {
+                $('#content').html("");
+                let body = '';
+                body = 'Seu dispositivo não esta conectado na web.';
+                $("#content").append(body);
+
+                $("#Modal").modal();
+                $("#Modal").modal({ keyboard: false });
+                $("#Modal").modal('show');
+                return false;
+            }
+
+            var transaction = db.transaction("Cliente", "readwrite");
+            var objectStore = transaction.objectStore("Cliente");
+            var req = objectStore.openCursor();
+            var contar = 0;
+
+            req.onsuccess = function (evt) {
+                var cursor = evt.target.result;
+                if (cursor) {
+                    contar += 1;
+                    if (typeof evt.target.result != 'undefined' && online == true) {
+                        ClientePostar(cursor.value.Nome, cursor.value.Contato, cursor.value.Documento, cursor.value.Telefone, cursor.value.Celular, cursor.value.Email, cursor.value.cep, cursor.value.Endereco, cursor.value.Complemento, cursor.value.Bairro, cursor.value.Cidade, cursor.value.Estado);
+                        db.transaction(["Cliente"], "readwrite").objectStore("Cliente").delete(cursor.value.id);
+                    }
+
+                    cursor.continue();
+                }
+                $('#content').html("");
+                let body = '';
+                if (contar >= 2) {
+                    body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + ' registros.</span>';
+                } else {
+                    body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + ' registro.</span>';
+                }
+
+                $("#content").append(body);
+                $("#Modal").modal();
+                $("#Modal").modal({ keyboard: false });
+                $("#Modal").modal('show');
+            };
+        });
+
+
+
+    });
+</script>
+
+<script>
+    function ClientePostar(_Nome, _Contato, _Documento, _Telefone, _Celular, _Email, _Cep, _Endereco, _Complemento, _Contato, _Bairro, _Cidade, _Estado) {
+        var json = {
+            "Nome": _Nome, "Contato": _Contato, "cnpjcpf": _Documento, "Telefone": _Telefone, "Celular": _Celular, "Email": _Email, "Cep": _Cep,
+            "Endereco": _Endereco, "Complemento": _Complemento, "Bairro": _Bairro, "Cidade": _Cidade, "Estado": _Estado
+        };
+
+        $.ajax({
+            type: "POST",
+            url: 'Cliente/post',
+            data: JSON.stringify(json),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            cache: false,
+
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+            success: function (data) {
+                console.log(data);
+            },
+        });
+    }
+</script>
+
+<script>
+    function getCookie(c_name) {
+        if (document.cookie.length > 0) {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) {
+                    c_end = document.cookie.length;
+                }
+                return unescape(document.cookie.substring(c_start, c_end));
+            }
+        }
+    }
+</script>
+
+
+
+
+
 <div class="modal-header light-blue darken-3 white-text">
-    <h4 class="title"><i class="fas fa-pencil-alt"></i> Cliente</h4>
+    <h4 class="title"><i class="fas fa-paste"></i> Cliente</h4>
     <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">×</span>
     </button>
@@ -14,7 +237,7 @@
 <form class="text-center border border-light p-5" action="#!">
     <div class="form-row mb-4">
         <div class="col">
-            <input type="text" id="Nome" name="nome" class="form-control" placeholder="Nome">
+            <input type="text" id="Nome" name="Nome" class="form-control" placeholder="Nome">
         </div>
         <div class="col">
             <input type="text" id="Contato" name="Contato" class="form-control" placeholder="Contato">
@@ -26,7 +249,7 @@
     </p>
 
     <p>
-        <input type="email" id="email" name="email" class="form-control mb-4" placeholder="E-mail">
+        <input type="email" id="Email" name="Email" class="form-control mb-4" placeholder="E-mail">
     </p>
 
     <div class="form-row mb-4">
@@ -74,253 +297,26 @@
     </div>
 </form>
 
+<!-- Modal -->
+<div id="Modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Seus Pedidos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="content"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
 
+    </div>
+</div>
+<!-- Modal -->
 <!-- Default form register -->
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
-
-
-<script type="text/javascript">
-    function buscaCep() {
-        let msg2 = document.getElementById("Cep").value;
-        if (msg2 == null) {
-            return false;
-        }
-        else {
-            $.ajax({
-                url: 'https://viacep.com.br/ws/' + msg2 + '/json/',
-                type: 'GET',
-                data: '',
-                success: function (data) {
-
-
-                    $.each(data, function (key, val) {
-
-                        if (key == 'logradouro') {
-                            $('#Endereco').val(val);
-                        }
-
-                        if (key == 'bairro') {
-                            $('#Bairro').val(val);
-                        }
-
-
-                        if (key == 'localidade') {
-                            $('#Cidade').val(val);
-                        }
-
-                        if (key == 'uf') {
-                            $('#Estado').val(val);
-                        }
-
-                    });
-
-                },
-                error: function (e) {
-                }
-            });
-        }
-    }
-</script>
-
-<style type="text/css">
-    .tabela {
-        font-family: Verdana, Arial, Helvetica, sans-serif;
-        font-size: 10px;
-    }
-</style>
-
-<script>
-    function formatar(mascara, documento) {
-        var i = documento.value.length;
-        var saida = mascara.substring(0, 1);
-        var texto = mascara.substring(i)
-
-        if (texto.substring(0, 1) != saida) {
-            documento.value += texto.substring(0, 1);
-        }
-    }
-</script>
-
-
-
-<script src="~/js/jquery.min.js"></script>
-<script src="~/js/bootstrap.min.js"></script>
-<link href="~/css/font-awesome.min.css" rel="stylesheet" />
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-        var request, db;
-        if (!window.indexedDB) {
-            console.log("Seu navegador não suporta o recurso HTML5 IndexedDB");
-        }
-        else {
-            request = window.indexedDB.open("D5", 1);
-            request.onerror = function (event) {
-                console.log("Erro ao abrir o banco de dados", event);
-            }
-
-            request.onupgradeneeded = function (event) {
-                console.log("Atualizando");
-                db = event.target.result;
-                var objectStore = db.createObjectStore("Cliente", { keyPath: "id", autoIncrement: true });
-            };
-            request.onsuccess = function (event) {
-                console.log("Banco de dados aberto com sucesso");
-                db = event.target.result;
-            }
-        };
-
-        $("#addBtn").click(function () {
-            var Nome = $("#Nome").val();
-            var Contato = $("#Contato").val();
-            var Documento = $("#Documento").val();
-            var Celular = $("#Celular").val();
-            var Telefone = $("#Telefone").val();
-            var Cep = $("#Cep").val();
-            var Endereco = $("#Endereco").val();
-            var Complemento = $("#Complemento").val();
-            var Bairro = $("#Bairro").val();
-            var Cidade = $("#Cidade").val();
-            var Estado = $("#Estado").val();
-
-            var transaction = db.transaction(["Cliente"], "readwrite");
-            transaction.oncomplete = function (event) {
-                console.log("Sucesso :)");
-                $("#result").html("Adicionado com Sucesso");
-            };
-            transaction.onerror = function (event) {
-                console.log("Erro :(");
-                $("#result").html("Erro ao Adicionar");
-            };
-
-            var objectStore = transaction.objectStore("Cliente");
-            objectStore.add({ Nome: Nome, Contato: Contato, Documento: Documento, Celular: Celular, Telefone: Telefone, Cep: Cep, Endereco: Endereco, Complemento: Complemento, Bairro: Bairro, Cidade: Cidade, Estado: Estado });
-
-            $('#content').html("");
-            let body = '';
-            body = 'Adicionado dados digitados.';
-            $("#content").append(body);
-            $("#myModal").modal();
-            $("#myModal").modal({ keyboard: false });
-            $("#myModal").modal('show');
-            return false;
-        });
-
-
-        $("#sincronizaBtn").click(function () {
-            var VendedorId = getCookie("D4User");
-            if (VendedorId == null) {
-                $('#content').html("");
-                let body = '';
-                body = 'Favor efetuar o seu Login.';
-                $("#content").append(body);
-
-                $("#myModal").modal();
-                $("#myModal").modal({ keyboard: false });
-                $("#myModal").modal('show');
-                return false;
-            }
-
-            online = window.navigator.onLine;
-            if (online == false) {
-                $('#content').html("");
-                let body = '';
-                body = 'Seu dispositivo não esta conectado na web.';
-                $("#content").append(body);
-
-                $("#myModal").modal();
-                $("#myModal").modal({ keyboard: false });
-                $("#myModal").modal('show');
-                return false;
-            };
-
-            var transaction = db.transaction("Cliente", "readwrite");
-            var objectStore = transaction.objectStore("Cliente");
-            var req = objectStore.openCursor();
-            var contar = 0;
-
-            req.onsuccess = function (evt) {
-                var cursor = evt.target.result;
-                if (cursor) {
-                    contar += 1;
-
-                    if (typeof evt.target.result != 'undefined' && online == true) {
-                        ClientePostar(cursor.value.Nome, cursor.value.Contato, cursor.value.Documento,
-                                      cursor.value.Telefone, cursor.value.Celular, cursor.value.Email,
-                                      cursor.value.Endereco, cursor.value.Complemento, cursor.value.Bairro,
-                                      cursor.value.Cidade, cursor.value.Estado, cursor.value.Cep);
-
-                    //db.transaction(["Cliente"], "readwrite").objectStore("Cliente").delete(cursor.value.id);
-                    }
-                    cursor.continue();
-                }
-                $('#content').html("");
-                let body = '';
-                if (contar >= 2) {
-                    body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + ' registros.</span>';
-                } else {
-                    body = 'Atualizado na base de dados:<span class=badge badge-light>' + contar + ' registro.</span>';
-                }
-
-                $("#content").append(body);
-                $("#myModal").modal();
-                $("#myModal").modal({ keyboard: false });
-                $("#myModal").modal('show');
-            };
-        });
-
-
-
-
-    });
-</script>
-
-<script>
-    function ClientePostar(_Nome, _Contato, _Documento, _Telefone, _Celular, _Email, _Endereco, _Complemento, _Bairro, _Cidade, _Estado, _Cep) {
-        var json = {
-            "Nome": _Nome, "Contato": _Contato, "cnpjcpf": _Documento, "Telefone": _Telefone, "Celular": _Celular, "Email": _Email,
-            "Endereco": _Endereco, "Complemento": _Complemento, "Bairro": _Bairro, "Cidade": _Cidade, "Estado": _Estado, "Cep": _Cep
-        };
-
-          $.ajax({
-            type: "POST",
-            url: 'Cliente/post',
-            data: JSON.stringify(json),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            cache: false,
-
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-            },
-            success: function (data) {
-                
-                console.log(data);
-            },
-        });
-    }
-</script>
-
-<script>
-    function getCookie(c_name) {
-        if (document.cookie.length > 0) {
-            c_start = document.cookie.indexOf(c_name + "=");
-            if (c_start != -1) {
-                c_start = c_start + c_name.length + 1;
-                c_end = document.cookie.indexOf(";", c_start);
-                if (c_end == -1) {
-                    c_end = document.cookie.length;
-                }
-                return unescape(document.cookie.substring(c_start, c_end));
-            }
-        }
-    }
-</script>
-
