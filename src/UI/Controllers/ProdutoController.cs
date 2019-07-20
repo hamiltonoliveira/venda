@@ -27,16 +27,16 @@ namespace UI.Controllers
         [HttpGet("GetId/{id}")]
         public ActionResult<IEnumerable<Produto>> GetId(int id)
         {
-            var Clientes = _Repositorio.Where(p => p.id == id);
+            var produto = _Repositorio.Where(p => p.id == id);
 
-            return Ok(Clientes);
+            return Ok(produto);
         }
 
         [HttpGet("Get/{nome}")]
         public ActionResult<IEnumerable<Produto>> Tudo(string nome)
         {
-            var Clientes = _Repositorio.Where(p => p.Nome.Contains(nome)).OrderBy(x => x.Nome).ToList();
-            return Ok(Clientes);
+            var produto = _Repositorio.Where(p => p.Nome.Contains(nome)).OrderBy(x => x.Nome).ToList();
+            return Ok(produto);
         }
 
     }
