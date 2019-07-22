@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace UI.Controllers
             return View();
         }
 
-
+        [Authorize()]
         [HttpGet("GetId/{id}")]
         public ActionResult<IEnumerable<Produto>> GetId(int id)
         {
@@ -32,6 +33,7 @@ namespace UI.Controllers
             return Ok(produto);
         }
 
+        [Authorize()]
         [HttpGet("Get/{nome}")]
         public ActionResult<IEnumerable<Produto>> Tudo(string nome)
         {

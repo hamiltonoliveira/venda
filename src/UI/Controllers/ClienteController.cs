@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,10 +39,10 @@ namespace UI.Controllers
             await _Repositorio.InsertAsync(cliente);
             return Ok(cliente);
         }
-  
 
 
-    [HttpGet("getall")]
+        //[Authorize()]
+        [HttpGet("getall")]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
             //var claims = User.Claims.ToList();
@@ -58,7 +59,7 @@ namespace UI.Controllers
             return await _Repositorio.GetAllAsync();
        }
 
-  
+        [Authorize()]
         [HttpGet("GetId/{id}")]
         public ActionResult<IEnumerable<Cliente>> GetId(int id)
         {
@@ -67,6 +68,7 @@ namespace UI.Controllers
             return  Ok(Clientes);
         }
 
+        [Authorize()]
         [HttpGet("Get/{nome}")]
         public ActionResult<IEnumerable<Cliente>> Tudo(string nome)
         {
