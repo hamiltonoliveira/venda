@@ -13,7 +13,6 @@ namespace UI.Controllers
 
     public class ClienteController : Controller
     {
-        // GET: Cliente
         private IServices<Cliente> _Repositorio;
 
         public ClienteController(IServices<Cliente> Repositorio)
@@ -28,7 +27,6 @@ namespace UI.Controllers
         }
 
 
-        // POST: api/Usuario
         [HttpPost("post")]
         public async Task<ActionResult<Cliente>> PostCliente([FromBody] Cliente cliente)
         {
@@ -41,7 +39,7 @@ namespace UI.Controllers
         }
 
 
-        //[Authorize()]
+        [Authorize()]
         [HttpGet("getall")]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {

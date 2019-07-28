@@ -30,7 +30,6 @@ namespace UI.Controllers
         }
 
 
-        // POST: api/Usuario
         [HttpPost("post")]
         public async Task<ActionResult<Pedido>> PostPedido([FromBody] Pedido pedido)
         {

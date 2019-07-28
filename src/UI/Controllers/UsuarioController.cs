@@ -25,7 +25,6 @@ namespace UI.Controllers
              _Repositorio = Repositorio;
         }
 
-        // GET: api/Usuario
         [EnableCors("EnabledCORS")]
         [Authorize(Roles = "1")]
         [HttpGet("GetAll")]
@@ -47,7 +46,6 @@ namespace UI.Controllers
 
         }
 
-        // GET: api/Usuario/5
         [HttpGet("GetId/{id}")]
         public async Task<ActionResult<Usuario>> GetId(int id)
         {
@@ -59,7 +57,6 @@ namespace UI.Controllers
             return Ok(await model);
         }
 
-        // PUT: api/Usuario/5
         [HttpPut("{put}")]
         public async Task<IActionResult> PutUsuario([FromBody] Usuario usuario)
         {
@@ -128,7 +125,6 @@ namespace UI.Controllers
         }
     
 
-       // POST: api/Usuario
         [HttpPost("post")]
         public async Task<ActionResult<Usuario>> PostUsuario([FromBody] Usuario usuario)
         {
@@ -145,7 +141,6 @@ namespace UI.Controllers
             return Ok(usuario);
         }
 
-        // DELETE: api/Usuario/5
         [HttpDelete("{del}")]
         public async Task<ActionResult<Usuario>> DeleteUsuario([FromBody] Usuario usuario)
         {

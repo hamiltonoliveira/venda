@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,15 +35,6 @@ namespace UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            //Swagger
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "API", Version = "V1" });
-            });
-            //Swagger
-
-
 
             // Servico de compactação
             services.AddResponseCompression();
@@ -112,8 +105,30 @@ namespace UI
                  fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
             //acrescentado o FluentiValidation
 
+            //Swagger
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new Info { Title = "API", Version = "V1" });
+            //});
+            //Swagger
+
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "Venda D4",
+                    Description = "Swagger surface",
+                    Contact = new Contact { Name = "Bruno Brito", Email = "bhdebrito@gmail.com", Url = "http://www.brunobrito.net.br" },
+                    License = new License { Name = "MIT", Url = "https://github.com/brunohbrito/MongoDB-RepositoryUoWPatterns/blob/master/LICENSE" },
+
+                });
+            });
+
+
+
             //pwa
-                  services.AddProgressiveWebApp();
+            services.AddProgressiveWebApp();
             //pwa
 
 
@@ -158,10 +173,14 @@ namespace UI
             // Ativar a compactação
 
             //Swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseMvc();
+            app.UseSwagger(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "post API V1");
+                c.RouteTemplate = "swagger/{documentName}/swagger.json";
+            });
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Repository Pattern and Unit of Work API v1.0");
             });
             //Swagger
 
