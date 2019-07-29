@@ -22,7 +22,6 @@ namespace ApplicationCore.Entities
         }
     }
 
-  
     public class UsuarioValidation : AbstractValidator<Usuario>
     {
         public UsuarioValidation()
