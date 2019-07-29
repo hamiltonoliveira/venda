@@ -11,12 +11,12 @@ namespace UI.Controllers
     [ApiController]
     public class ProdutoController : Controller
     {
-        private IServices<Produto> _Repositorio;
+        private IServices<Produto> _ServicoProduto;
         // GET: Produto
 
-        public ProdutoController(IServices<Produto> Repositorio)
+        public ProdutoController(IServices<Produto> ServicoProduto)
         {
-            _Repositorio = Repositorio;
+            _ServicoProduto = ServicoProduto;
         }
 
         public ActionResult Index()
@@ -28,7 +28,7 @@ namespace UI.Controllers
         [HttpGet("GetId/{id}")]
         public ActionResult<IEnumerable<Produto>> GetId(int id)
         {
-            var produto = _Repositorio.Where(p => p.id == id);
+            var produto = _ServicoProduto.Where(p => p.id == id);
 
             return Ok(produto);
         }
@@ -37,7 +37,7 @@ namespace UI.Controllers
         [HttpGet("Get/{nome}")]
         public ActionResult<IEnumerable<Produto>> Tudo(string nome)
         {
-            var produto = _Repositorio.Where(p => p.Nome.Contains(nome)).OrderBy(x => x.Nome).ToList();
+            var produto = _ServicoProduto.Where(p => p.Nome.Contains(nome)).OrderBy(x => x.Nome).ToList();
             return Ok(produto);
         }
 

@@ -12,11 +12,11 @@ namespace UI.Controllers
 
     public class PedidoController : Controller
     {
-        private IServices<Pedido> _Repositorio;
+        private IServices<Pedido> _ServicoPedido;
 
-        public PedidoController(IServices<Pedido> Repositorio)
+        public PedidoController(IServices<Pedido> ServicoPedido)
         {
-            _Repositorio = Repositorio;
+            _ServicoPedido = ServicoPedido;
         }
 
         public ActionResult Index()
@@ -37,7 +37,7 @@ namespace UI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            await _Repositorio.InsertAsync(pedido);
+            await _ServicoPedido.InsertAsync(pedido);
             return Ok(pedido);
           }
      }

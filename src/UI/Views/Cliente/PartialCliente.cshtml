@@ -227,10 +227,10 @@
 <form class="text-center border border-light p-5" action="#!">
     <div class="form-row mb-4">
         <div class="col">
-            <input type="text" id="Nome" name="Nome" class="form-control" placeholder="Nome">
+            <input type="text" id="Nome" name="Nome" class="form-control" maxlength="50" placeholder="Nome">
         </div>
         <div class="col">
-            <input type="text" id="Contato" name="Contato" class="form-control" placeholder="Contato">
+            <input type="text" id="Contato" name="Contato" class="form-control" maxlength="50" placeholder="Contato">
         </div>
     </div>
 
@@ -239,15 +239,15 @@
     </p>
 
     <p>
-        <input type="email" id="Email" name="Email" class="form-control mb-4" placeholder="E-mail">
+        <input type="email" id="Email" name="Email" class="form-control mb-4" maxlength="30" placeholder="E-mail">
     </p>
 
     <div class="form-row mb-4">
         <div class="col">
-            <input type="text" id="Celular" name="Celular" class="form-control" placeholder="Celular" maxlength="12" OnKeyPress="formatar('##-###-#####', this)">
+            <input type="text" id="Celular" name="Celular" class="form-control" placeholder="Celular" maxlength="15" OnKeyPress="formatar('##-###-#####', this)">
         </div>
         <div class="col">
-            <input type="text" id="Telefone" name="Telefone" class="form-control" placeholder="Telefone" maxlength="12" OnKeyPress="formatar('##-###-#####', this)">
+            <input type="text" id="Telefone" name="Telefone" class="form-control" placeholder="Telefone" maxlength="15" OnKeyPress="formatar('##-###-#####', this)">
         </div>
     </div>
 
@@ -256,19 +256,19 @@
     </p>
 
     <p>
-        <input type="text" id="Endereco" name="Endereco" class="form-control" placeholder="Endereco">
+        <input type="text" id="Endereco" name="Endereco" class="form-control" maxlength="60" placeholder="Endereco">
     </p>
     <p>
-        <input type="text" id="Complemento" name="Complemento" class="form-control" placeholder="Complemento">
+        <input type="text" id="Complemento" name="Complemento" class="form-control" maxlength="20" placeholder="Complemento">
     </p>
     <p>
-        <input type="text" id="Bairro" name="Bairro" class="form-control" placeholder="Bairro">
+        <input type="text" id="Bairro" name="Bairro" class="form-control" maxlength="30" placeholder="Bairro">
     </p>
     <p>
-        <input type="text" id="Cidade" name="Cidade" class="form-control" placeholder="Cidade">
+        <input type="text" id="Cidade" name="Cidade" class="form-control" maxlength="30" placeholder="Cidade">
     </p>
     <p>
-        <input type="text" id="Estado" name="Estado" class="form-control" placeholder="Estado">
+        <input type="text" id="Estado" name="Estado" class="form-control" maxlength="02" placeholder="Estado">
     </p>
 
 

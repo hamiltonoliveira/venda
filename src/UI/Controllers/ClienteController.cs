@@ -13,11 +13,11 @@ namespace UI.Controllers
 
     public class ClienteController : Controller
     {
-        private IServices<Cliente> _Repositorio;
+        private IServices<Cliente> _ServicoCliente;
 
-        public ClienteController(IServices<Cliente> Repositorio)
+        public ClienteController(IServices<Cliente> ServicoCliente)
         {
-            _Repositorio = Repositorio;
+            _ServicoCliente = ServicoCliente;
 
         }
 
@@ -34,7 +34,7 @@ namespace UI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            await _Repositorio.InsertAsync(cliente);
+            await _ServicoCliente.InsertAsync(cliente);
             return Ok(cliente);
         }
 
@@ -54,14 +54,14 @@ namespace UI.Controllers
             //    return await _Repositorio.GetAllAsync();
             //}
 
-            return await _Repositorio.GetAllAsync();
+            return await _ServicoCliente.GetAllAsync();
        }
 
         [Authorize()]
         [HttpGet("GetId/{id}")]
         public ActionResult<IEnumerable<Cliente>> GetId(int id)
         {
-           var Clientes = _Repositorio.Where(p => p.id == id);
+           var Clientes = _ServicoCliente.Where(p => p.id == id);
 
             return  Ok(Clientes);
         }
@@ -70,7 +70,7 @@ namespace UI.Controllers
         [HttpGet("Get/{nome}")]
         public ActionResult<IEnumerable<Cliente>> Tudo(string nome)
         {
-            var Clientes = _Repositorio.Where(p=>p.Nome.Contains(nome)).OrderBy(x=>x.Nome).ToList();
+            var Clientes = _ServicoCliente.Where(p=>p.Nome.Contains(nome)).OrderBy(x=>x.Nome).ToList();
             return Ok(Clientes);
         }
 
