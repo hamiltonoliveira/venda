@@ -65,6 +65,19 @@
       "jQuery/3.0.0": {
         "type": "package"
       },
+      "MicroElements.Swashbuckle.FluentValidation/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "FluentValidation": "8.1.3",
+          "Swashbuckle.AspNetCore": "[4.0.1, 5.0.0)"
+        },
+        "compile": {
+          "lib/netstandard2.0/MicroElements.Swashbuckle.FluentValidation.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MicroElements.Swashbuckle.FluentValidation.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -5063,6 +5076,19 @@
         "Tools/uninstall.ps1",
         "jquery.3.0.0.nupkg.sha512",
         "jquery.nuspec"
+      ]
+    },
+    "MicroElements.Swashbuckle.FluentValidation/2.0.0": {
+      "sha512": "0y/vIck8Z/FkIFJ/5ML5S+cklkh+8EafLjje2CyJkq7U7VLSccd1iY+kt6YBMozhFpsxaLqa9x8wvq+/rTs2Eg==",
+      "type": "package",
+      "path": "microelements.swashbuckle.fluentvalidation/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/MicroElements.Swashbuckle.FluentValidation.dll",
+        "lib/netstandard2.0/MicroElements.Swashbuckle.FluentValidation.xml",
+        "microelements.swashbuckle.fluentvalidation.2.0.0.nupkg.sha512",
+        "microelements.swashbuckle.fluentvalidation.nuspec"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -13428,6 +13454,7 @@
     ".NETCoreApp,Version=v2.2": [
       "ApplicationCore >= 1.0.0",
       "Infra >= 1.0.0",
+      "MicroElements.Swashbuckle.FluentValidation >= 2.0.0",
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",
@@ -13488,6 +13515,10 @@
     "frameworks": {
       "netcoreapp2.2": {
         "dependencies": {
+          "MicroElements.Swashbuckle.FluentValidation": {
+            "target": "Package",
+            "version": "[2.0.0, )"
+          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",

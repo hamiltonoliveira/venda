@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "5bc7eb962631dfd0e98f1568a2a4c846fbe5ae0a"
+    "signature": "fd47f7e693d8422d6b8edae613a3777730a45b7f"
   },
   "compilationOptions": {
     "defines": [
@@ -26,6 +26,7 @@
         "dependencies": {
           "ApplicationCore": "1.0.0",
           "Infra": "1.0.0",
+          "MicroElements.Swashbuckle.FluentValidation": "2.0.0",
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
@@ -109,6 +110,21 @@
         }
       },
       "jQuery/3.0.0": {},
+      "MicroElements.Swashbuckle.FluentValidation/2.0.0": {
+        "dependencies": {
+          "FluentValidation": "8.4.0",
+          "Swashbuckle.AspNetCore": "4.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/MicroElements.Swashbuckle.FluentValidation.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/MicroElements.Swashbuckle.FluentValidation.dll": {}
+        }
+      },
       "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
         "dependencies": {
           "Microsoft.CodeAnalysis.CSharp": "2.8.0",
@@ -3832,6 +3848,13 @@
       "sha512": "sha512-xFfntV19HzCtKdJWOp/XT9PUY3SslokTDDLFJZdBug36j1XVhw1+vPQ/n7Gd5y+jdpesn5B1m1yn1qIUq57jlA==",
       "path": "jquery/3.0.0",
       "hashPath": "jquery.3.0.0.nupkg.sha512"
+    },
+    "MicroElements.Swashbuckle.FluentValidation/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0y/vIck8Z/FkIFJ/5ML5S+cklkh+8EafLjje2CyJkq7U7VLSccd1iY+kt6YBMozhFpsxaLqa9x8wvq+/rTs2Eg==",
+      "path": "microelements.swashbuckle.fluentvalidation/2.0.0",
+      "hashPath": "microelements.swashbuckle.fluentvalidation.2.0.0.nupkg.sha512"
     },
     "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
       "type": "package",

@@ -106,26 +106,13 @@ namespace UI
             //acrescentado o FluentiValidation
 
             //Swagger
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new Info { Title = "API", Version = "V1" });
-            //});
-            //Swagger
-
-            services.AddSwaggerGen(s =>
+            services.AddSwaggerGen(c =>
             {
-                s.SwaggerDoc("v1", new Info
-                {
-                    Version = "v1",
-                    Title = "Venda D4",
-                    Description = "Swagger surface",
-                    Contact = new Contact { Name = "Bruno Brito", Email = "bhdebrito@gmail.com", Url = "http://www.brunobrito.net.br" },
-                    License = new License { Name = "MIT", Url = "https://github.com/brunohbrito/MongoDB-RepositoryUoWPatterns/blob/master/LICENSE" },
-
-                });
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                // Adds fluent validation rules to swagger
+                c.AddFluentValidationRules();
             });
-
-
+            //Swagger
 
             //pwa
             services.AddProgressiveWebApp();
@@ -174,13 +161,9 @@ namespace UI
 
             //Swagger
             app.UseMvc();
-            app.UseSwagger(c =>
+            app.UseSwaggerUI(c =>
             {
-                c.RouteTemplate = "swagger/{documentName}/swagger.json";
-            });
-            app.UseSwaggerUI(s =>
-            {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Repository Pattern and Unit of Work API v1.0");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
             //Swagger
 
@@ -194,8 +177,6 @@ namespace UI
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-
         }
     }
 }
